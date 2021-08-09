@@ -8,7 +8,7 @@ module.exports = {
   },
 
   async run(interaction) {
-    let pingEmbed = new Embed()
+    const pingEmbed = new Embed()
       .setType("default")
       .setTitle("🏓 Ping")
       .setDescription(`${interaction.client.ws.ping}ms`);

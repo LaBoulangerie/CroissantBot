@@ -44,7 +44,7 @@ client.on("interactionCreate", (interaction) => {
 
       command.run(interaction);
     } catch (error) {
-      let errorEmbed = new Embed()
+      const errorEmbed = new Embed()
         .setType("error")
         .setDescription("Something went wrong, that should not happen.");
       interaction.reply({ embeds: [errorEmbed] });

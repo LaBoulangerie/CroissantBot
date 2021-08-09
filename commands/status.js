@@ -11,7 +11,7 @@ module.exports = {
   async run(interaction) {
     const statusData = await getStatus();
 
-    let statusEmbed = new Embed()
+    const statusEmbed = new Embed()
       .setType("default")
       .setTitle("💓 Statut du serveur")
       .setDescription(statusData.online ? "✅ En ligne" : "🔴 Hors ligne");

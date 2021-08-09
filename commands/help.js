@@ -62,7 +62,7 @@ module.exports = {
 
         return await interaction.reply({ embeds: [helpEmbed] });
       } else {
-        let errorEmbed = new Embed()
+        const errorEmbed = new Embed()
           .setType("error")
           .setDescription("Something went wrong, that should not happen.");
         return await interaction.reply({ embeds: [errorEmbed] });
