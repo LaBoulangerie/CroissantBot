@@ -1,0 +1,17 @@
+{
+  "name": "croissant",
+  "version": "1.0.0",
+  "description": "Croissant is the main Discord Bot for La Boulangerie Networks' Discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "PainOchoco",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "discord.js": "^13.0.1",
+    "dotenv": "^10.0.0",
+    "path": "^0.12.7"
+  }
+}
