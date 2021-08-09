@@ -1,5 +1,6 @@
 const { getStatus } = require("../utils/api");
 const { Embed } = require("../utils/embed");
+const { fancyList } = require("../utils/miscUtils");
 
 module.exports = {
   data: {
@@ -22,9 +23,7 @@ module.exports = {
         .addField(
           "👥 Joueurs",
           `${statusData.players.online}/${statusData.players.max} • ` +
-            `${statusData.players.list
-              .map((player) => `\`${player}\``)
-              .join(", ")}`
+            `${fancyList(statusData.players.list)}`
         );
     }
 

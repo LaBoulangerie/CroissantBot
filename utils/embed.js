@@ -15,13 +15,8 @@ class Embed extends Discord.MessageEmbed {
 
     switch (this.type) {
       case "error":
-        this.setTitle("❌ Error");
+        this.setTitle("❌ Erreur");
         this.setColor("RED");
-        break;
-
-      case "syntax-error":
-        this.setTitle("✏ Syntax error");
-        this.setColor("ORANGE");
         break;
 
       case "default":

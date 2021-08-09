@@ -22,8 +22,6 @@ module.exports = {
     const name = interaction.options.getString("name");
     const townData = await getTown(name);
 
-    console.log(townData);
-
     if (townData.error) {
       const errorEmbed = new Embed()
         .setType("error")
@@ -49,7 +47,7 @@ module.exports = {
 
     if (townData.mayor) townEmbed.addField("👨‍💼 Maire", townData.mayor, true);
 
-    if (townData.residents)
+    if (townData.residents.length)
       townEmbed.addField(
         `👥 ${townData.residents.length} résident` +
           (townData.residents.length > 1 ? "s" : ""),
