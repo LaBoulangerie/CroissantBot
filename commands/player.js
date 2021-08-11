@@ -1,6 +1,11 @@
 const { getPlayer } = require("../utils/api");
 const { Embed } = require("../utils/embed");
-const { fancyList, dateToString } = require("../utils/miscUtils");
+const { fancyList, dateToString } = require("../utils/misc");
+
+const path = require("path");
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 module.exports = {
   data: {
@@ -76,6 +81,14 @@ module.exports = {
         true
       )
       .addField("⏳ Date d'arrivée", dateToString(playerData.registered), true);
+
+    playerEmbed.addField(
+      process.env.WIKI_EMOJI + " Page wiki",
+      `[${playerData.name}](${
+        process.env.WIKI_BASE_URL + "wiki/" + playerData.name
+      })`,
+      true
+    );
 
     return await interaction.editReply({ embeds: [playerEmbed] });
   },

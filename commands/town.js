@@ -1,6 +1,11 @@
 const { getTown } = require("../utils/api");
 const { Embed } = require("../utils/embed");
-const { fancyList, dateToString } = require("../utils/miscUtils");
+const { fancyList, dateToString } = require("../utils/misc");
+
+const path = require("path");
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env"),
+});
 
 module.exports = {
   data: {
@@ -63,6 +68,14 @@ module.exports = {
     townEmbed.addField(
       "⏳ Date de création",
       dateToString(townData.registered),
+      true
+    );
+
+    townEmbed.addField(
+      process.env.WIKI_EMOJI + " Page wiki",
+      `[${townData.name}](${
+        process.env.WIKI_BASE_URL + "wiki/" + townData.name
+      })`,
       true
     );
 

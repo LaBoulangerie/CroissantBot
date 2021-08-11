@@ -31,6 +31,18 @@ const registerCommands = async () => {
   }
 };
 
+// Event Handler
+fs.readdir("./events/", (err, eventFiles) => {
+  if (err) console.error(err);
+  console.log(`[OK!] [EVENTS] ${eventFiles.length} events ont été chargés !`);
+  eventFiles.forEach((file) => {
+    const eventName = file.split(".")[0];
+    const event = require(`./events/${file}`);
+    bot.on(eventName, event.bind(null, bot));
+    delete require.cache[require.resolve(`./events/${file}`)];
+  });
+});
+
 client.once("ready", async () => {
   await registerCommands();
   console.log(`${client.user.username} is ready to launch!`);

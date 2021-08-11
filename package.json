@@ -9,10 +9,12 @@
   "author": "PainOchoco",
   "license": "MIT",
   "dependencies": {
+    "@wakeful-cloud/html-translator": "^1.0.1",
     "axios": "^0.21.1",
     "discord.js": "^13.0.1",
     "dotenv": "^10.0.0",
     "luxon": "^2.0.2",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "wikijs": "^6.2.3"
   }
 }

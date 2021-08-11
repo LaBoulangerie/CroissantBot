@@ -1,6 +1,6 @@
 const { getStatus } = require("../utils/api");
 const { Embed } = require("../utils/embed");
-const { fancyList } = require("../utils/miscUtils");
+const { fancyList } = require("../utils/misc");
 
 module.exports = {
   data: {

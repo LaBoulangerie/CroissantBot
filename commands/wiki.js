@@ -97,6 +97,7 @@ module.exports = {
 
           return await interaction.editReply({ embeds: [errorEmbed] });
         }
+
         const pageImages = await result.images();
 
         const pageEmbed = new Embed()

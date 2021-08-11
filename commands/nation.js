@@ -1,6 +1,6 @@
 const { getNation } = require("../utils/api");
 const { Embed } = require("../utils/embed");
-const { fancyList, dateToString } = require("../utils/miscUtils");
+const { fancyList, dateToString } = require("../utils/misc");
 
 const path = require("path");
 require("dotenv").config({
@@ -26,7 +26,6 @@ module.exports = {
 
     const name = interaction.options.getString("name");
     const nationData = await getNation(name);
-    const wikiEmoji = "<:wiki:792694310197133323>";
 
     if (nationData.error) {
       const errorEmbed = new Embed()
@@ -73,8 +72,10 @@ module.exports = {
     );
 
     nationEmbed.addField(
-      wikiEmoji + " Page wiki",
-      `[${nationData.name}](${process.env.WIKI_BASE_URL + nationData.name})`,
+      process.env.WIKI_EMOJI + " Page wiki",
+      `[${nationData.name}](${
+        process.env.WIKI_BASE_URL + "wiki/" + nationData.name
+      })`,
       true
     );
 
