@@ -1,5 +1,5 @@
 const axios = require("axios");
-const baseUrl = "http://api.lblg.cc/";
+const baseUrl = "http://api.laboulangerie.net/";
 
 const getStatus = async () => {
   return (await axios.get(baseUrl + "status")).data;
