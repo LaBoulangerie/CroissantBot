@@ -1,0 +1,598 @@
+{
+  "openapi" : "3.0.3",
+  "info" : {
+    "title" : "La Boulangerie API",
+    "summary" : null,
+    "description" : null,
+    "termsOfService" : null,
+    "contact" : null,
+    "license" : null,
+    "version" : ""
+  },
+  "paths" : {
+    "/server" : {
+      "get" : {
+        "tags" : [ "Server" ],
+        "summary" : "Get server informations",
+        "operationId" : "getServer",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ServerModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/town" : {
+      "get" : {
+        "tags" : [ "Town" ],
+        "summary" : "Get all towns",
+        "operationId" : "getTowns",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameUuidModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/town/{identifier}" : {
+      "get" : {
+        "tags" : [ "Town" ],
+        "summary" : "Get town with name or UUID",
+        "operationId" : "getTown",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "description" : "Name or UUID of the town",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TownModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/nation" : {
+      "get" : {
+        "tags" : [ "Nation" ],
+        "summary" : "Get all nations",
+        "operationId" : "getNations",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameUuidModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/nation/{identifier}" : {
+      "get" : {
+        "tags" : [ "Nation" ],
+        "summary" : "Get nation with name or UUID",
+        "operationId" : "getNation",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "description" : "Name or UUID of the nation",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NationModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/player" : {
+      "get" : {
+        "tags" : [ "Player" ],
+        "summary" : "Get all players",
+        "operationId" : "getPlayers",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameUuidModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/player/{identifier}" : {
+      "get" : {
+        "tags" : [ "Player" ],
+        "summary" : "Get player with name or UUID",
+        "operationId" : "getPlayer",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "description" : "Name or UUID of the player",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlayerModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/search/{query}" : {
+      "get" : {
+        "tags" : [ "Search" ],
+        "summary" : "Search for player, town or nation by name",
+        "operationId" : "search",
+        "parameters" : [ {
+          "name" : "query",
+          "in" : "path",
+          "description" : "Search query",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameUuidModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "ServerModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "motd" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "bukkitVersion" : {
+            "type" : "string"
+          },
+          "tps" : {
+            "type" : "string"
+          },
+          "maxPlayers" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "onlinePlayers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          }
+        },
+        "required" : [ "maxPlayers" ]
+      },
+      "NameUuidModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "uuid" : {
+            "type" : "string"
+          }
+        }
+      },
+      "NotFoundResponse" : {
+        "type" : "object",
+        "properties" : { }
+      },
+      "TownModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "uuid" : {
+            "type" : "string"
+          },
+          "nation" : {
+            "$ref" : "#/components/schemas/NameUuidModel"
+          },
+          "joinedNationAt" : {
+            "type" : "number",
+            "format" : "int64"
+          },
+          "mayor" : {
+            "$ref" : "#/components/schemas/NameUuidModel"
+          },
+          "board" : {
+            "type" : "string"
+          },
+          "tag" : {
+            "type" : "string"
+          },
+          "formattedName" : {
+            "type" : "string"
+          },
+          "registered" : {
+            "type" : "number",
+            "format" : "int64"
+          },
+          "balance" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mapColor" : {
+            "type" : "string"
+          },
+          "residents" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          },
+          "spawn" : {
+            "$ref" : "#/components/schemas/CoordinatesModel"
+          },
+          "townBlocks" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CoordinatesModel"
+            }
+          },
+          "isNeutral" : {
+            "type" : "boolean"
+          },
+          "isOpen" : {
+            "type" : "boolean"
+          },
+          "isPublic" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "joinedNationAt", "registered", "balance" ]
+      },
+      "NationModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "uuid" : {
+            "type" : "string"
+          },
+          "king" : {
+            "$ref" : "#/components/schemas/NameUuidModel"
+          },
+          "capital" : {
+            "$ref" : "#/components/schemas/NameUuidModel"
+          },
+          "board" : {
+            "type" : "string"
+          },
+          "tag" : {
+            "type" : "string"
+          },
+          "formattedName" : {
+            "type" : "string"
+          },
+          "registered" : {
+            "type" : "number",
+            "format" : "int64"
+          },
+          "balance" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "mapColor" : {
+            "type" : "string"
+          },
+          "towns" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          },
+          "residents" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          },
+          "enemies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          },
+          "allies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          },
+          "spawn" : {
+            "$ref" : "#/components/schemas/CoordinatesModel"
+          },
+          "isNeutral" : {
+            "type" : "boolean"
+          },
+          "isOpen" : {
+            "type" : "boolean"
+          },
+          "isPublic" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "registered", "balance" ]
+      },
+      "PlayerModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "uuid" : {
+            "type" : "string"
+          },
+          "firstPlayed" : {
+            "type" : "number",
+            "format" : "int64"
+          },
+          "lastSeen" : {
+            "type" : "number",
+            "format" : "int64"
+          },
+          "isOnline" : {
+            "type" : "boolean"
+          },
+          "resident" : {
+            "$ref" : "#/components/schemas/ResidentModel"
+          },
+          "mmo" : {
+            "$ref" : "#/components/schemas/MmoModel"
+          }
+        },
+        "required" : [ "firstPlayed", "lastSeen" ]
+      },
+      "CoordinatesModel" : {
+        "type" : "object",
+        "properties" : {
+          "x" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "y" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "z" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "world" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "x", "y", "z" ]
+      },
+      "ResidentModel" : {
+        "type" : "object",
+        "properties" : {
+          "town" : {
+            "$ref" : "#/components/schemas/NameUuidModel"
+          },
+          "nation" : {
+            "$ref" : "#/components/schemas/NameUuidModel"
+          },
+          "friends" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameUuidModel"
+            }
+          },
+          "isMayor" : {
+            "type" : "boolean"
+          },
+          "isKing" : {
+            "type" : "boolean"
+          },
+          "townRanks" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "nationRanks" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "surname" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "prefix" : {
+            "type" : "string"
+          },
+          "postfix" : {
+            "type" : "string"
+          },
+          "formattedName" : {
+            "type" : "string"
+          }
+        }
+      },
+      "MmoModel" : {
+        "type" : "object",
+        "properties" : {
+          "palier" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "talents" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TalentModel"
+            }
+          }
+        },
+        "required" : [ "palier" ]
+      },
+      "TalentModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "level" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "xp" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "xpToNextLevel" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "minLevelXp" : {
+            "type" : "number",
+            "format" : "double"
+          }
+        },
+        "required" : [ "level", "xp", "xpToNextLevel", "minLevelXp" ]
+      }
+    },
+    "securitySchemes" : { }
+  },
+  "servers" : [ ],
+  "security" : null
+}
