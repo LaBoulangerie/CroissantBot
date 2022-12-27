@@ -1,5 +1,6 @@
 import {
     AutocompleteInteraction,
+    bold,
     Colors,
     EmbedBuilder,
     hyperlink,
@@ -134,6 +135,23 @@ const Player: Command = {
                 ) +
                 "]";
 
+            const maxLvl = 100;
+
+            let fieldValue: string;
+
+            if (talent.level == maxLvl) {
+                fieldValue = bold(`✨ NIVEAU ${talent.lvl} ✨`);
+            } else {
+                fieldValue = inlineCode(
+                    Math.round(progress * 100) +
+                        "% " +
+                        progressBar +
+                        `(${talent.xp.toFixed(2)}/${(
+                            talent.xpToNextLevel + talent.minLevelXp
+                        ).toFixed(2)})xp`
+                );
+            }
+
             playerEmbed.addFields({
                 name: [
                     talentEmojis[talent.name] ? talentEmojis[talent.name] : "",
@@ -141,14 +159,7 @@ const Player: Command = {
                     "lvl",
                     inlineCode(talent.level.toString()),
                 ].join(" "),
-                value: inlineCode(
-                    Math.round(progress * 100) +
-                        "% " +
-                        progressBar +
-                        `(${talent.xp.toFixed(2)}/${(
-                            talent.xpToNextLevel + talent.minLevelXp
-                        ).toFixed(2)})xp`
-                ),
+                value: fieldValue,
             });
         });
 
