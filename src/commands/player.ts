@@ -140,7 +140,7 @@ const Player: Command = {
             let fieldValue: string;
 
             if (talent.level == maxLvl) {
-                fieldValue = bold(`✨ NIVEAU ${talent.lvl} ✨`);
+                fieldValue = bold(`✨ NIVEAU ${talent.level} ✨`);
             } else {
                 fieldValue = inlineCode(
                     Math.round(progress * 100) +
