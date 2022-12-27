@@ -65,7 +65,8 @@ const Player: Command = {
                     : player.data.resident.isMayor
                     ? "🎖️"
                     : "👤") +
-                    inlineCode(`[${player.data.mmo.palier}] `) +
+                    inlineCode(`[${player.data.mmo.palier}]`) +
+                    " " +
                     player.data.resident.formattedName +
                     " • " +
                     (player.data.isOnline ? "✅ En ligne" : "🔴 Hors ligne")
