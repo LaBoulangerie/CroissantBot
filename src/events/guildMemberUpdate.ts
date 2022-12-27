@@ -1,11 +1,16 @@
-import { Client, Events, GuildMember } from "discord.js";
+import { Events, GuildMember } from "discord.js";
 import { Event } from "../types/event";
 import roles from "../roles.json";
+import { ExtendedClient } from "../types/extendedClient";
 
 const GuildMemberUpdate: Event = {
     name: Events.GuildMemberUpdate,
     once: false,
-    run(client: Client, oldMember: GuildMember, newMember: GuildMember) {
+    run(
+        client: ExtendedClient,
+        oldMember: GuildMember,
+        newMember: GuildMember
+    ) {
         if (!newMember || !oldMember) return;
 
         if (oldMember.roles.cache.size < newMember.roles.cache.size) {

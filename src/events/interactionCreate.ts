@@ -1,10 +1,11 @@
-import { Client, Events, Interaction } from "discord.js";
+import { Events, Interaction } from "discord.js";
 import { Event } from "../types/event";
+import { ExtendedClient } from "../types/extendedClient";
 
 const InteractionCreate: Event = {
     name: Events.InteractionCreate,
     once: false,
-    async run(client: Client, interaction: Interaction) {
+    async run(client: ExtendedClient, interaction: Interaction) {
         if (interaction.isChatInputCommand()) {
             const command = interaction.client.commands.get(
                 interaction.commandName

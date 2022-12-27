@@ -1,17 +1,12 @@
-import {
-    Client,
-    EmbedBuilder,
-    Events,
-    GuildMember,
-    TextChannel,
-} from "discord.js";
+import { EmbedBuilder, Events, GuildMember, TextChannel } from "discord.js";
 import config from "../config";
 import { Event } from "../types/event";
+import { ExtendedClient } from "../types/extendedClient";
 
 const GuildMemberAdd: Event = {
     name: Events.GuildMemberAdd,
     once: false,
-    run(client: Client, member: GuildMember) {
+    run(client: ExtendedClient, member: GuildMember) {
         const welcomeChannel = client.channels.cache.get(
             config.welcomeChannelID
         ) as TextChannel;

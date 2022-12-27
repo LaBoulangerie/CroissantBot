@@ -1,7 +1,8 @@
-import { Client, Events } from "discord.js";
+import { Events } from "discord.js";
+import { ExtendedClient } from "./extendedClient";
 
 export interface Event {
     name: Events;
     once: boolean;
-    run: (client: Client, ...args) => void;
+    run: (client: ExtendedClient, ...args) => void;
 }
