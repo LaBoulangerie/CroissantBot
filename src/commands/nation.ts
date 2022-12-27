@@ -22,7 +22,7 @@ const Nation: Command = {
                 .setAutocomplete(true)
         )
         .toJSON(),
-    async run(interaction) {
+    async run(client, interaction) {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier", true);
@@ -127,7 +127,7 @@ const Nation: Command = {
 
         return await interaction.editReply({ embeds: [nationEmbed] });
     },
-    async autocomplete(interaction: AutocompleteInteraction) {
+    async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
         const nations = await fetcher.path("/nation").method("get").create()(
             {}

@@ -7,9 +7,7 @@ const InteractionCreate: Event = {
     once: false,
     async run(client: ExtendedClient, interaction: Interaction) {
         if (interaction.isChatInputCommand()) {
-            const command = interaction.client.commands.get(
-                interaction.commandName
-            );
+            const command = client.commands.get(interaction.commandName);
 
             if (!command) {
                 console.error(
@@ -19,15 +17,13 @@ const InteractionCreate: Event = {
             }
 
             try {
-                command.run(interaction);
+                command.run(client, interaction);
             } catch (error) {
                 console.error(`Error executing ${interaction.commandName}`);
                 console.error(error);
             }
         } else if (interaction.isAutocomplete()) {
-            const command = interaction.client.commands.get(
-                interaction.commandName
-            );
+            const command = client.commands.get(interaction.commandName);
 
             if (!command) {
                 console.error(
@@ -37,7 +33,7 @@ const InteractionCreate: Event = {
             }
 
             try {
-                await command.autocomplete(interaction);
+                await command.autocomplete(client, interaction);
             } catch (error) {
                 console.error(error);
             }

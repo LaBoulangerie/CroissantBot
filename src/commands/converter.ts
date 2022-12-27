@@ -19,7 +19,7 @@ const Converter: Command = {
             option.setName("amount").setDescription("Montant").setRequired(true)
         )
         .toJSON(),
-    run(interaction) {
+    run(client, interaction) {
         const amount = interaction.options.getInteger("amount", true);
         const coinsForAmount = converter(amount);
 

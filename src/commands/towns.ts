@@ -8,7 +8,7 @@ const Towns: Command = {
         .setName("towns")
         .setDescription("Donne la liste des villes présentes sur le serveur")
         .toJSON(),
-    async run(interaction) {
+    async run(client, interaction) {
         const towns = await fetcher.path("/town").method("get").create()({});
 
         const townsEmbed = new EmbedBuilder()

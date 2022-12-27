@@ -25,7 +25,7 @@ const Town: Command = {
         )
         .toJSON(),
 
-    async run(interaction) {
+    async run(client, interaction) {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier");
@@ -126,7 +126,7 @@ const Town: Command = {
         return await interaction.editReply({ embeds: [townEmbed] });
     },
 
-    async autocomplete(interaction: AutocompleteInteraction) {
+    async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
         const towns = await fetcher.path("/town").method("get").create()({});
 

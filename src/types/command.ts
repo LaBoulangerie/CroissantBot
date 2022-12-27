@@ -3,9 +3,16 @@ import {
     AutocompleteInteraction,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
 } from "discord.js";
+import { ExtendedClient } from "./extendedClient";
 
 export interface Command {
     data: RESTPostAPIChatInputApplicationCommandsJSONBody;
-    run: (interaction: ChatInputCommandInteraction) => void;
-    autocomplete?: (interaction: AutocompleteInteraction) => Promise<void>;
+    run: (
+        client: ExtendedClient,
+        interaction: ChatInputCommandInteraction
+    ) => void;
+    autocomplete?: (
+        client: ExtendedClient,
+        interaction: AutocompleteInteraction
+    ) => Promise<void>;
 }

@@ -25,7 +25,7 @@ const Player: Command = {
         )
         .toJSON(),
 
-    async run(interaction) {
+    async run(client, interaction) {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier");
@@ -175,7 +175,7 @@ const Player: Command = {
 
         return await interaction.editReply({ embeds: [playerEmbed] });
     },
-    async autocomplete(interaction: AutocompleteInteraction) {
+    async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
         const players = await fetcher.path("/player").method("get").create()(
             {}

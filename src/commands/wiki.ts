@@ -48,7 +48,7 @@ const Wiki: Command = {
         )
         .toJSON(),
 
-    async run(interaction: ChatInputCommandInteraction) {
+    async run(client, interaction) {
         await interaction.deferReply();
 
         switch (interaction.options.getSubcommand()) {

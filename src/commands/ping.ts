@@ -11,7 +11,7 @@ const Ping: Command = {
         .setName("ping")
         .setDescription("Pong ! Renvoie la latence du bot en ms")
         .toJSON(),
-    run(interaction: ChatInputCommandInteraction) {
+    run(client, interaction) {
         const pingEmbed = new EmbedBuilder()
             .setColor(config.color)
             .setTitle("🏓 Pong")

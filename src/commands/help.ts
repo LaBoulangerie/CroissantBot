@@ -20,15 +20,11 @@ const Help: Command = {
         )
         .toJSON(),
 
-    async run(interaction: ChatInputCommandInteraction) {
-        const commands = interaction.client.commands;
+    async run(client, interaction: ChatInputCommandInteraction) {
+        const commands = client.commands;
         const optionalCommand = interaction.options.getString("command");
 
-        if (
-            Array.from(interaction.client.commands.keys()).includes(
-                optionalCommand
-            )
-        ) {
+        if (Array.from(client.commands.keys()).includes(optionalCommand)) {
             const command = commands.get(optionalCommand).data;
 
             const helpEmbed = new EmbedBuilder()
@@ -78,7 +74,7 @@ const Help: Command = {
         });
     },
 
-    async autocomplete(interaction: AutocompleteInteraction) {
+    async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
         const choices = interaction.client.commands.keys();
         const filtered = Array.from(choices)

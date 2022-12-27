@@ -8,7 +8,7 @@ const Nations: Command = {
         .setName("nations")
         .setDescription("Donne la liste des nations présentes sur le serveur")
         .toJSON(),
-    async run(interaction) {
+    async run(client, interaction) {
         const nations = await fetcher.path("/nation").method("get").create()(
             {}
         );
