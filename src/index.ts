@@ -1,10 +1,11 @@
-import { Client, Collection, GatewayIntentBits } from "discord.js";
+import { Collection, GatewayIntentBits } from "discord.js";
 import * as fs from "fs";
 import * as path from "path";
 import config from "./config";
 import { Command } from "./types/command";
+import { ExtendedClient } from "./types/extendedClient";
 
-const client = new Client({
+const client = new ExtendedClient({
     intents: [
         GatewayIntentBits.Guilds,
         GatewayIntentBits.GuildMessages,
@@ -12,7 +13,6 @@ const client = new Client({
         GatewayIntentBits.GuildMembers,
     ],
 });
-client.commands = new Collection<string, Command>();
 
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
