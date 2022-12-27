@@ -23,6 +23,13 @@ const Converter: Command = {
         const amount = interaction.options.getInteger("amount", true);
         const coinsForAmount = converter(amount);
 
+        if (amount <= 0) {
+            interaction.reply({
+                content: "Pas de nombres nuls ou négatifs !",
+                ephemeral: true,
+            });
+        }
+
         const converterEmbed = new EmbedBuilder()
             .setTitle("💰 Convertisseur")
             .setColor(config.color)
