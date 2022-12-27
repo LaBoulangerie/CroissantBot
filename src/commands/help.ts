@@ -76,7 +76,7 @@ const Help: Command = {
 
     async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const choices = interaction.client.commands.keys();
+        const choices = client.commands.keys();
         const filtered = Array.from(choices)
             .filter((choice) => choice.startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
