@@ -17,7 +17,7 @@ const client = new ExtendedClient({
 const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
     .readdirSync(commandsPath)
-    .filter((file) => file.endsWith(".ts"));
+    .filter((file) => file.endsWith(config.fileExtension));
 
 for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
@@ -29,7 +29,7 @@ for (const file of commandFiles) {
 const eventsPath = path.join(__dirname, "events");
 const eventFiles = fs
     .readdirSync(eventsPath)
-    .filter((file) => file.endsWith(".ts"));
+    .filter((file) => file.endsWith(config.fileExtension));
 
 for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);

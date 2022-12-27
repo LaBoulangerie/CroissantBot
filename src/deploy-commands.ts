@@ -5,7 +5,7 @@ const commands = [];
 
 const commandFiles = fs
     .readdirSync("./src/commands")
-    .filter((file) => file.endsWith(".ts"));
+    .filter((file) => file.endsWith(config.fileExtension));
 
 for (const file of commandFiles) {
     const command = require(`./src/commands/${file}`).default.data;

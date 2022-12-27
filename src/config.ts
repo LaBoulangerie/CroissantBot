@@ -24,4 +24,6 @@ export default {
     nationsCategoryID: process.env.NATIONS_CATEGORY_ID,
 
     memberRoleID: process.env.MEMBER_ROLE_ID,
+
+    fileExtension: process.env.FILE_EXTENSION,
 };
