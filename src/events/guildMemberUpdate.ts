@@ -23,7 +23,13 @@ const GuildMemberUpdate: Event = {
                 const roleGroup = newMember.guild.roles.cache.get(role.group);
                 newMember.roles.add(roleGroup);
 
-                newMember.setNickname(`${role.tag} ${newMember.displayName}`);
+                const nick = `${role.tag} ${newMember.displayName}`;
+
+                if (nick.length <= 32) {
+                    newMember.setNickname(
+                        `${role.tag} ${newMember.displayName}`
+                    );
+                }
             }
         }
     },

@@ -51,7 +51,11 @@ const MessageCreate: Event = {
                         }
                     );
 
-                message.author.send({ embeds: [infoEmbed] });
+                try {
+                    message.author.send({ embeds: [infoEmbed] });
+                } catch (error) {
+                    console.error("Could not send the message, DM closed.");
+                }
 
                 const logChannel = client.channels.cache.get(
                     config.logChannelID
