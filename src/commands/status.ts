@@ -44,7 +44,7 @@ const Status: Command = {
                         status.data.onlinePlayers.length +
                         " joueur" +
                         (status.data.onlinePlayers.length > 1 ? "s" : "") +
-                        " en ligne :" +
+                        " en ligne : " +
                         status.data.onlinePlayers
                             .map((p) => inlineCode(p.name))
                             .join(", "),

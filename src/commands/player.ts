@@ -147,8 +147,8 @@ const Player: Command = {
                     Math.round(progress * 100) +
                         "% " +
                         progressBar +
-                        `(${talent.xp.toFixed(2)}/${(
-                            talent.xpToNextLevel + talent.minLevelXp
+                        `(${talent.xp.toFixed(2)-talent.minLevelXp}/${(
+                            talent.xpToNextLevel
                         ).toFixed(2)})xp`
                 );
             }
