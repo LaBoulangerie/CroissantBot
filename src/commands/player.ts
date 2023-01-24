@@ -126,7 +126,7 @@ const Player: Command = {
         player.data.mmo.talents.forEach((talent) => {
             const progress =
                 (talent.xp - talent.minLevelXp) /
-                (talent.xp + talent.xpToNextLevel - talent.minLevelXp);
+                talent.xpToNextLevel;
             const progressBarSize = 20;
             const progressBar =
                 "[" +
@@ -147,9 +147,9 @@ const Player: Command = {
                     Math.round(progress * 100) +
                         "% " +
                         progressBar +
-                        `(${talent.xp.toFixed(2)-talent.minLevelXp}/${(
-                            talent.xpToNextLevel
-                        ).toFixed(2)})xp`
+                        `(${(talent.xp-talent.minLevelXp).toFixed(2)}/${
+                            talent.xpToNextLevel.toFixed(2)
+                        })xp`
                 );
             }
 
