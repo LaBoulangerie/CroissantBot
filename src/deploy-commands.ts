@@ -3,7 +3,7 @@ import * as fs from "fs";
 import config from "./config";
 const commands = [];
 const mode = process.argv[2];
-
+const modes = ["global", "guild", "reset"];
 const commandFiles = fs
     .readdirSync("./commands")
     .filter((file) => file.endsWith(config.fileExtension));
@@ -17,6 +17,11 @@ const rest = new REST({ version: "10" }).setToken(config.discordToken);
 
 (async () => {
     try {
+        if (!modes.includes(mode)) {
+            console.log(`Mode not found, try ${modes.join(", ")}`);
+            return;
+        }
+
         console.log(`Started refreshing ${commands.length} application commands.`);
 
         let data: Array<any>;
@@ -34,8 +39,12 @@ const rest = new REST({ version: "10" }).setToken(config.discordToken);
                 )) as Array<any>;
                 break;
 
-            default:
-                console.log("Mode not found, use 'global' or 'guild'");
+            case "reset":
+                await rest.put(Routes.applicationCommands(config.clientID), { body: [] });
+                await rest.put(Routes.applicationGuildCommands(config.clientID, config.guildID), {
+                    body: [],
+                });
+                console.log("Successfully reset application commands!");
                 return;
         }
 
