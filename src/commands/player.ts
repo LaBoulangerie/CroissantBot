@@ -1,5 +1,4 @@
 import {
-    AutocompleteInteraction,
     bold,
     Colors,
     EmbedBuilder,
@@ -31,10 +30,7 @@ const Player: Command = {
 
         const identifier = interaction.options.getString("identifier");
 
-        const getPlayer = fetcher
-            .path("/player/{identifier}")
-            .method("get")
-            .create();
+        const getPlayer = fetcher.path("/player/{identifier}").method("get").create();
 
         let player: ApiResponse;
 
@@ -60,11 +56,7 @@ const Player: Command = {
         const playerEmbed = new EmbedBuilder()
             .setColor(config.color)
             .setTitle(
-                (player.data.resident.isKing
-                    ? "👑"
-                    : player.data.resident.isMayor
-                    ? "🎖️"
-                    : "👤") +
+                (player.data.resident.isKing ? "👑" : player.data.resident.isMayor ? "🎖️" : "👤") +
                     inlineCode(`[${player.data.mmo.palier}]`) +
                     " " +
                     player.data.resident.formattedName +
@@ -72,10 +64,7 @@ const Player: Command = {
                     (player.data.isOnline ? "✅ En ligne" : "🔴 Hors ligne")
             )
             .setThumbnail(
-                `https://visage.surgeplay.com/bust/${player.data.uuid.replace(
-                    "-",
-                    ""
-                )}.png`
+                `https://visage.surgeplay.com/bust/${player.data.uuid.replace("-", "")}.png`
             );
 
         if (player.data.resident.town) {
@@ -89,9 +78,7 @@ const Player: Command = {
         if (player.data.resident.townRanks.length) {
             playerEmbed.addFields({
                 name: "🏡 Rangs de ville",
-                value: player.data.resident.townRanks
-                    .map((x) => inlineCode(x))
-                    .join(", "),
+                value: player.data.resident.townRanks.map((x) => inlineCode(x)).join(", "),
                 inline: true,
             });
         }
@@ -99,9 +86,7 @@ const Player: Command = {
         if (player.data.resident.nationRanks.length) {
             playerEmbed.addFields({
                 name: "🚩 Rangs de nation",
-                value: player.data.resident.nationRanks
-                    .map((x) => inlineCode(x))
-                    .join(", "),
+                value: player.data.resident.nationRanks.map((x) => inlineCode(x)).join(", "),
                 inline: true,
             });
         }
@@ -109,9 +94,7 @@ const Player: Command = {
         if (player.data.resident.friends.length) {
             playerEmbed.addFields({
                 name: "🙌 Amis",
-                value: player.data.resident.friends
-                    .map((x) => inlineCode(x.name))
-                    .join(", "),
+                value: player.data.resident.friends.map((x) => inlineCode(x.name)).join(", "),
                 inline: true,
             });
         }
@@ -124,16 +107,12 @@ const Player: Command = {
         };
 
         player.data.mmo.talents.forEach((talent) => {
-            const progress =
-                (talent.xp - talent.minLevelXp) /
-                talent.xpToNextLevel;
+            const progress = (talent.xp - talent.minLevelXp) / talent.xpToNextLevel;
             const progressBarSize = 20;
             const progressBar =
                 "[" +
                 "=".repeat(Math.round(progress * progressBarSize)) +
-                "-".repeat(
-                    progressBarSize - Math.round(progress * progressBarSize)
-                ) +
+                "-".repeat(progressBarSize - Math.round(progress * progressBarSize)) +
                 "]";
 
             const maxLvl = 100;
@@ -147,9 +126,9 @@ const Player: Command = {
                     Math.round(progress * 100) +
                         "% " +
                         progressBar +
-                        `(${(talent.xp-talent.minLevelXp).toFixed(2)}/${
-                            talent.xpToNextLevel.toFixed(2)
-                        })xp`
+                        `(${(talent.xp - talent.minLevelXp).toFixed(
+                            2
+                        )}/${talent.xpToNextLevel.toFixed(2)})xp`
                 );
             }
 
@@ -177,10 +156,7 @@ const Player: Command = {
             },
             {
                 name: config.wikiEmoji + " Page wiki",
-                value: hyperlink(
-                    player.data.name,
-                    config.wikiBaseURL + "wiki/" + player.data.name
-                ),
+                value: hyperlink(player.data.name, config.wikiBaseURL + "wiki/" + player.data.name),
                 inline: true,
             }
         );
@@ -189,14 +165,10 @@ const Player: Command = {
     },
     async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const players = await fetcher.path("/player").method("get").create()(
-            {}
-        );
+        const players = await fetcher.path("/player").method("get").create()({});
 
         const filtered = Array.from(players.data)
-            .filter((choice) =>
-                choice.name.toLowerCase().startsWith(focusedValue.toLowerCase())
-            )
+            .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(
             filtered.map((choice) => ({

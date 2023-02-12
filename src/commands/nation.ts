@@ -1,10 +1,5 @@
 import { EmbedBuilder, hyperlink, time } from "@discordjs/builders";
-import {
-    AutocompleteInteraction,
-    Colors,
-    inlineCode,
-    SlashCommandBuilder,
-} from "discord.js";
+import { Colors, inlineCode, SlashCommandBuilder } from "discord.js";
 import { ApiResponse } from "openapi-typescript-fetch";
 import config from "../config";
 import fetcher from "../fetcher";
@@ -26,10 +21,7 @@ const Nation: Command = {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier", true);
-        const getNation = fetcher
-            .path("/nation/{identifier}")
-            .method("get")
-            .create();
+        const getNation = fetcher.path("/nation/{identifier}").method("get").create();
         let nation: ApiResponse;
 
         try {
@@ -52,9 +44,7 @@ const Nation: Command = {
         const nationEmbed = new EmbedBuilder()
             .setColor(parseInt(nation.data.mapColor, 16))
             .setTitle(
-                "🚩 " +
-                    nation.data.formattedName +
-                    (nation.data.tag ? ` [${nation.data.tag}]` : "")
+                "🚩 " + nation.data.formattedName + (nation.data.tag ? ` [${nation.data.tag}]` : "")
             );
 
         if (nation.data.spawn) {
@@ -72,18 +62,14 @@ const Nation: Command = {
         if (nation.data.allies.length) {
             nationEmbed.addFields({
                 name: "🤝 Alliés",
-                value: nation.data.allies
-                    .map((x) => inlineCode(x.name))
-                    .join(", "),
+                value: nation.data.allies.map((x) => inlineCode(x.name)).join(", "),
             });
         }
 
         if (nation.data.enemies.length) {
             nationEmbed.addFields({
                 name: "⚔️ Enemis",
-                value: nation.data.enemies
-                    .map((x) => inlineCode(x.name))
-                    .join(", "),
+                value: nation.data.enemies.map((x) => inlineCode(x.name)).join(", "),
             });
         }
 
@@ -95,9 +81,7 @@ const Nation: Command = {
             },
             {
                 name: `🏘️ ${nation.data.towns.length} villes`,
-                value: nation.data.towns
-                    .map((town) => inlineCode(town.name))
-                    .join(", "),
+                value: nation.data.towns.map((town) => inlineCode(town.name)).join(", "),
                 inline: true,
             },
             {
@@ -117,10 +101,7 @@ const Nation: Command = {
             },
             {
                 name: config.wikiEmoji + " Page wiki",
-                value: hyperlink(
-                    nation.data.name,
-                    config.wikiBaseURL + "wiki/" + nation.data.name
-                ),
+                value: hyperlink(nation.data.name, config.wikiBaseURL + "wiki/" + nation.data.name),
                 inline: true,
             }
         );
@@ -129,14 +110,10 @@ const Nation: Command = {
     },
     async autocomplete(client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const nations = await fetcher.path("/nation").method("get").create()(
-            {}
-        );
+        const nations = await fetcher.path("/nation").method("get").create()({});
 
         const filtered = Array.from(nations.data)
-            .filter((choice) =>
-                choice.name.toLowerCase().startsWith(focusedValue.toLowerCase())
-            )
+            .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(
             filtered.map((choice) => ({

@@ -2,14 +2,7 @@ import config from "../config";
 import wiki, { Page } from "wikijs";
 import translate from "@wakeful-cloud/html-translator";
 import { Command } from "../types/command";
-import {
-    ChatInputCommandInteraction,
-    Colors,
-    EmbedBuilder,
-    hyperlink,
-    SlashCommandBuilder,
-    time,
-} from "discord.js";
+import { Colors, EmbedBuilder, hyperlink, SlashCommandBuilder, time } from "discord.js";
 import { DateTime } from "luxon";
 const wikiApi = wiki({ apiUrl: config.wikiBaseURL + "api.php" });
 
@@ -22,10 +15,7 @@ const Wiki: Command = {
                 .setName("search")
                 .setDescription("Chercher une page sur le wiki")
                 .addStringOption((option) =>
-                    option
-                        .setName("page")
-                        .setDescription("Nom de la page")
-                        .setRequired(true)
+                    option.setName("page").setDescription("Nom de la page").setRequired(true)
                 )
         )
         .addSubcommand((subCommand) =>
@@ -33,18 +23,13 @@ const Wiki: Command = {
                 .setName("get")
                 .setDescription("Donne un aperçu d'une page sur le wiki")
                 .addStringOption((option) =>
-                    option
-                        .setName("page")
-                        .setDescription("Nom précis de la page")
-                        .setRequired(true)
+                    option.setName("page").setDescription("Nom précis de la page").setRequired(true)
                 )
         )
         .addSubcommand((subCommand) =>
             subCommand
                 .setName("random")
-                .setDescription(
-                    "Renvoie une page aléatoirement choisie du wiki"
-                )
+                .setDescription("Renvoie une page aléatoirement choisie du wiki")
         )
         .toJSON(),
 
@@ -67,12 +52,7 @@ const Wiki: Command = {
                 }
 
                 const wikiPages = results.map(
-                    (p) =>
-                        `• ` +
-                        hyperlink(
-                            p,
-                            config.wikiBaseURL + "wiki/" + encodeURI(p)
-                        )
+                    (p) => `• ` + hyperlink(p, config.wikiBaseURL + "wiki/" + encodeURI(p))
                 );
 
                 const searchResultsEmbed = new EmbedBuilder()
@@ -85,10 +65,7 @@ const Wiki: Command = {
                 });
 
             case "get":
-                const specifiedPage = interaction.options.getString(
-                    "page",
-                    true
-                );
+                const specifiedPage = interaction.options.getString("page", true);
                 let resultPage: Page;
 
                 try {
@@ -112,10 +89,7 @@ const Wiki: Command = {
                         translate(
                             (await resultPage.html())
                                 .replace(/<aside(.)*?>(.|\n)*?<\/aside>/g, "") // Infobox
-                                .replace(
-                                    /<div id="toc"(.)*?>(.|\n)*?<\/ul>(.|\n)*?<\/div>/g,
-                                    ""
-                                ) // Sommaire
+                                .replace(/<div id="toc"(.)*?>(.|\n)*?<\/ul>(.|\n)*?<\/div>/g, "") // Sommaire
                                 .replace(/<figure(.)*?>(.|\n)*?<\/figure>/g, "") // Images next to text
                         ).markdown.substring(0, 1021) + "..."
                     )
@@ -123,19 +97,12 @@ const Wiki: Command = {
                     .addFields(
                         {
                             name: "📝 Dernier changement",
-                            value: time(
-                                DateTime.fromISO(
-                                    resultPage.raw.touched
-                                ).toUnixInteger()
-                            ),
+                            value: time(DateTime.fromISO(resultPage.raw.touched).toUnixInteger()),
                             inline: true,
                         },
                         {
                             name: "🖇️ Lien wiki",
-                            value: hyperlink(
-                                resultPage.raw.title,
-                                resultPage.raw.fullurl
-                            ),
+                            value: hyperlink(resultPage.raw.title, resultPage.raw.fullurl),
                             inline: true,
                         }
                     );
@@ -152,9 +119,7 @@ const Wiki: Command = {
                     .setColor(config.color)
                     .setTitle("🎲 Page aléatoire")
                     .setDescription(
-                        `[${randomPage}](${
-                            config.wikiBaseURL + "wiki/" + encodeURI(randomPage)
-                        })`
+                        `[${randomPage}](${config.wikiBaseURL + "wiki/" + encodeURI(randomPage)})`
                     );
 
                 return await interaction.editReply({

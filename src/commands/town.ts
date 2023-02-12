@@ -1,12 +1,4 @@
-import {
-    AutocompleteInteraction,
-    Colors,
-    EmbedBuilder,
-    hyperlink,
-    inlineCode,
-    SlashCommandBuilder,
-    time,
-} from "discord.js";
+import { Colors, EmbedBuilder, hyperlink, inlineCode, SlashCommandBuilder, time } from "discord.js";
 import { ApiResponse } from "openapi-typescript-fetch";
 import config from "../config";
 import fetcher from "../fetcher";
@@ -29,10 +21,7 @@ const Town: Command = {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier");
-        const getTown = fetcher
-            .path("/town/{identifier}")
-            .method("get")
-            .create();
+        const getTown = fetcher.path("/town/{identifier}").method("get").create();
         let town: ApiResponse;
 
         try {
@@ -56,9 +45,7 @@ const Town: Command = {
         const townEmbed = new EmbedBuilder()
             .setColor(config.color)
             .setTitle(
-                "🏡 " +
-                    town.data.formattedName +
-                    (town.data.tag ? ` [${town.data.tag}]` : "")
+                "🏡 " + town.data.formattedName + (town.data.tag ? ` [${town.data.tag}]` : "")
             );
 
         if (town.data.nation)
@@ -76,9 +63,7 @@ const Town: Command = {
             },
             {
                 name: `👥 ${town.data.residents.length} résidents`,
-                value: town.data.residents
-                    .map((res) => inlineCode(res.name))
-                    .join(", "),
+                value: town.data.residents.map((res) => inlineCode(res.name)).join(", "),
                 inline: true,
             },
             {
@@ -91,9 +76,7 @@ const Town: Command = {
                 value:
                     "XYZ: " +
                     inlineCode(
-                        `${town.data.spawn.x.toFixed(
-                            2
-                        )} ${town.data.spawn.y.toFixed(
+                        `${town.data.spawn.x.toFixed(2)} ${town.data.spawn.y.toFixed(
                             2
                         )} ${town.data.spawn.z.toFixed(2)}`
                     ),
@@ -115,10 +98,7 @@ const Town: Command = {
             },
             {
                 name: config.wikiEmoji + " Page wiki",
-                value: hyperlink(
-                    town.data.name,
-                    config.wikiBaseURL + "wiki/" + town.data.name
-                ),
+                value: hyperlink(town.data.name, config.wikiBaseURL + "wiki/" + town.data.name),
                 inline: true,
             }
         );
@@ -131,9 +111,7 @@ const Town: Command = {
         const towns = await fetcher.path("/town").method("get").create()({});
 
         const filtered = Array.from(towns.data)
-            .filter((choice) =>
-                choice.name.toLowerCase().startsWith(focusedValue.toLowerCase())
-            )
+            .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(
             filtered.map((choice) => ({

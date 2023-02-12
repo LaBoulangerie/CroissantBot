@@ -1,8 +1,4 @@
-import {
-    ChatInputCommandInteraction,
-    EmbedBuilder,
-    SlashCommandBuilder,
-} from "discord.js";
+import { EmbedBuilder, SlashCommandBuilder } from "discord.js";
 import config from "../config";
 import { Command } from "../types/command";
 

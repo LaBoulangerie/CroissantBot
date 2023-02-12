@@ -1,18 +1,11 @@
-import {
-    Client,
-    ColorResolvable,
-    EmbedBuilder,
-    Events,
-    Message,
-    TextChannel,
-} from "discord.js";
+import { EmbedBuilder, Events, Message, TextChannel } from "discord.js";
 import config from "../config";
 import { Event } from "../types/event";
 
 const MessageCreate: Event = {
     name: Events.MessageCreate,
     once: false,
-    async run(client: Client, message: Message) {
+    async run(client, message: Message) {
         if (message.author.bot) return;
 
         if (message.channel.id === config.verifChannelID) {
@@ -57,16 +50,12 @@ const MessageCreate: Event = {
                     console.error("Could not send the message, DM closed.");
                 }
 
-                const logChannel = client.channels.cache.get(
-                    config.logChannelID
-                ) as TextChannel;
+                const logChannel = client.channels.cache.get(config.logChannelID) as TextChannel;
 
                 const logEmbed = new EmbedBuilder()
                     .setColor(config.color)
                     .setTitle(`🍞 ${message.member.displayName}`)
-                    .setDescription(
-                        `<@${message.author.id}> est devenu membre !`
-                    );
+                    .setDescription(`<@${message.author.id}> est devenu membre !`);
                 logChannel.send({ embeds: [logEmbed] });
             } else {
                 message.react("❌");

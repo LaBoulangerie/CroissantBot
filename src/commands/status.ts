@@ -1,10 +1,4 @@
-import {
-    ChatInputCommandInteraction,
-    Colors,
-    EmbedBuilder,
-    inlineCode,
-    SlashCommandBuilder,
-} from "discord.js";
+import { Colors, EmbedBuilder, inlineCode, SlashCommandBuilder } from "discord.js";
 import { ApiResponse } from "openapi-typescript-fetch";
 import fetcher from "../fetcher";
 import { Command } from "../types/command";
@@ -45,9 +39,7 @@ const Status: Command = {
                         " joueur" +
                         (status.data.onlinePlayers.length > 1 ? "s" : "") +
                         " en ligne : " +
-                        status.data.onlinePlayers
-                            .map((p) => inlineCode(p.name))
-                            .join(", "),
+                        status.data.onlinePlayers.map((p) => inlineCode(p.name)).join(", "),
                 }
             );
         }

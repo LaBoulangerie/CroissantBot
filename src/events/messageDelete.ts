@@ -1,20 +1,11 @@
-import {
-    Client,
-    Colors,
-    EmbedBuilder,
-    Events,
-    Message,
-    TextChannel,
-} from "discord.js";
+import { Colors, EmbedBuilder, Events, Message, TextChannel } from "discord.js";
 import { Event } from "../types/event";
 
 const MessageDelete: Event = {
     name: Events.MessageDelete,
     once: false,
-    run(client: Client, message: Message) {
-        const logChannel = client.channels.cache.get(
-            process.env.LOG_CHANNEL_ID
-        ) as TextChannel;
+    run(client, message: Message) {
+        const logChannel = client.channels.cache.get(process.env.LOG_CHANNEL_ID) as TextChannel;
 
         const logEmbed = new EmbedBuilder()
             .setTitle("🗑️ Message supprimé")
@@ -32,8 +23,7 @@ const MessageDelete: Event = {
             )
             .setColor(Colors.Orange);
 
-        if (message.content)
-            logEmbed.addFields({ name: "📦 Contenu", value: message.content });
+        if (message.content) logEmbed.addFields({ name: "📦 Contenu", value: message.content });
 
         logChannel.send({ embeds: [logEmbed] });
     },

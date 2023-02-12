@@ -1,6 +1,5 @@
 import { Command } from "../types/command";
 import {
-    AutocompleteInteraction,
     ChatInputCommandInteraction,
     EmbedBuilder,
     inlineCode,
@@ -43,9 +42,7 @@ const Help: Command = {
                             (option) =>
                                 "• " +
                                 inlineCode(
-                                    option.required
-                                        ? `<${option.name}>`
-                                        : `[${option.name}]`
+                                    option.required ? `<${option.name}>` : `[${option.name}]`
                                 ) +
                                 ": " +
                                 option.description
