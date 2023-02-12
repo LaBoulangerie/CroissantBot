@@ -13,9 +13,11 @@
     "author": "PainOchoco",
     "license": "MIT",
     "dependencies": {
+        "@keyv/redis": "^2.5.5",
         "@wakeful-cloud/html-translator": "1.1.2",
         "discord.js": "14.7.1",
         "dotenv": "16.0.3",
+        "keyv": "^4.5.2",
         "luxon": "3.1.1",
         "openapi-typescript-fetch": "1.1.3",
         "path": "0.12.7",

@@ -26,4 +26,6 @@ export default {
     memberRoleID: process.env.MEMBER_ROLE_ID,
 
     fileExtension: process.env.FILE_EXTENSION,
+
+    redisDb: process.env.REDIS_DB,
 };
