@@ -1,25 +1,25 @@
 import { TextInputStyle } from "discord.js";
 import { Form } from "../types/form";
 
-const Nickname: Form = {
-    id: "nickname",
-    title: "Demande de surnom",
+const Alt: Form = {
+    id: "doublecompte",
+    title: "Déclaration de double compte",
     inputs: [
         {
             id: "username",
-            label: "Pseudo Minecraft",
+            label: "Pseudo Minecraft du compte principal",
             style: TextInputStyle.Short,
             required: true,
-            placeholder: "e.g. Salamenders_",
+            placeholder: "e.g. PainOchoco",
             minLength: 3,
             maxLength: 16,
         },
         {
-            id: "nickname",
-            label: "Surnom demandé",
+            id: "alt_username",
+            label: "Pseudo Minecraft du double compte",
             style: TextInputStyle.Short,
             required: true,
-            placeholder: "e.g. Farëanor. Espaces, accents et caractères spéciaux.",
+            placeholder: "e.g. PainOraisins",
             minLength: 3,
             maxLength: 32,
         },
@@ -28,11 +28,12 @@ const Nickname: Form = {
             label: "Raison",
             style: TextInputStyle.Paragraph,
             required: true,
-            placeholder: "Donnez une raison concise de pourquoi vous voulez ce surnom.",
+            placeholder:
+                "Donnez une raison concise de comment vous allez utiliser ce double compte.",
             minLength: 16,
             maxLength: 1024,
         },
     ],
 };
 
-export default Nickname;
+export default Alt;

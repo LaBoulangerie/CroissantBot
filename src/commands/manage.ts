@@ -85,7 +85,12 @@ const Manage: Command = {
                             formListEmbed.addFields({
                                 name: (await client.users.fetch(key)).tag,
                                 value: v
-                                    .map((r) => inlineCode(r.form.id) + " " + time(r.timestamp))
+                                    .map(
+                                        (r) =>
+                                            inlineCode(r.form.id) +
+                                            " " +
+                                            time(new Date(r.timestamp))
+                                    )
                                     .join(", "),
                             });
                         }

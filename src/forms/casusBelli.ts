@@ -1,38 +1,38 @@
 import { TextInputStyle } from "discord.js";
 import { Form } from "../types/form";
 
-const Nickname: Form = {
-    id: "nickname",
-    title: "Demande de surnom",
+const CasusBelli: Form = {
+    id: "casus-belli",
+    title: "Casus Belli",
     inputs: [
         {
             id: "username",
             label: "Pseudo Minecraft",
             style: TextInputStyle.Short,
             required: true,
-            placeholder: "e.g. Salamenders_",
+            placeholder: "e.g. Oskey44",
             minLength: 3,
             maxLength: 16,
         },
         {
-            id: "nickname",
-            label: "Surnom demandé",
+            id: "against",
+            label: "Camp adverse",
             style: TextInputStyle.Short,
             required: true,
-            placeholder: "e.g. Farëanor. Espaces, accents et caractères spéciaux.",
+            placeholder: "e.g. Ville.s, Nation.s, groupement de joueurs...",
             minLength: 3,
-            maxLength: 32,
+            maxLength: 16,
         },
         {
-            id: "reason",
-            label: "Raison",
+            id: "request",
+            label: "Casus Belli",
             style: TextInputStyle.Paragraph,
             required: true,
-            placeholder: "Donnez une raison concise de pourquoi vous voulez ce surnom.",
+            placeholder: "Décrivez votre casus belli précisément.",
             minLength: 16,
             maxLength: 1024,
         },
     ],
 };
 
-export default Nickname;
+export default CasusBelli;
