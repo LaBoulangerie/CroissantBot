@@ -23,7 +23,8 @@ const MessageDelete: Event = {
             )
             .setColor(Colors.Orange);
 
-        if (message.content) logEmbed.addFields({ name: "📦 Contenu", value: message.content });
+        if (message.content)
+            logEmbed.addFields({ name: "📦 Contenu", value: message.content.substring(0, 1024) });
 
         logChannel.send({ embeds: [logEmbed] });
     },
