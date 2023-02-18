@@ -24,6 +24,13 @@ const CasusBelli: Form = {
             maxLength: 16,
         },
         {
+            id: "file_url",
+            label: "Lien vers document complet",
+            style: TextInputStyle.Short,
+            required: false,
+            placeholder: "Lien optionel vers un google doc, pdf...",
+        },
+        {
             id: "request",
             label: "Casus Belli",
             style: TextInputStyle.Paragraph,
