@@ -5,6 +5,9 @@ import config from "./config";
 import { Command } from "./types/command";
 import { ExtendedClient } from "./types/extendedClient";
 import { Form } from "./types/form";
+import { google } from "googleapis";
+
+export const sheets = google.sheets("v4");
 
 const client = new ExtendedClient({
     intents: [

@@ -13,10 +13,12 @@
     "author": "PainOchoco",
     "license": "MIT",
     "dependencies": {
+        "@googleapis/sheets": "^4.0.1",
         "@keyv/redis": "^2.5.5",
         "@wakeful-cloud/html-translator": "1.1.2",
         "discord.js": "14.7.1",
         "dotenv": "16.0.3",
+        "googleapis": "^111.0.0",
         "keyv": "^4.5.2",
         "luxon": "3.2.1",
         "openapi-typescript-fetch": "1.1.3",

@@ -3,6 +3,9 @@ import keyv from "../db/keyv";
 import config from "../config";
 import { Event } from "../types/event";
 import { FormInputAnswer, FormResponse } from "../types/form";
+import { sheets } from "..";
+import { google } from "googleapis";
+import path from "path";
 
 const InteractionCreate: Event = {
     name: Events.InteractionCreate,
@@ -61,7 +64,27 @@ const InteractionCreate: Event = {
                 response.answers.push(answer);
                 notifyEmbed.addFields({ name: input.label, value: inputResponse });
             }
+            // Append data to google sheet
+            const auth = new google.auth.GoogleAuth({
+                keyFile: path.join(__dirname, "../../google_keys.json"),
+                scopes: [
+                    "https://www.googleapis.com/auth/drive",
+                    "https://www.googleapis.com/auth/spreadsheets",
+                ],
+            });
 
+            google.options({ auth });
+
+            await sheets.spreadsheets.values.append({
+                spreadsheetId: form.googleId,
+                valueInputOption: "USER_ENTERED",
+                range: "A2:Z",
+                requestBody: {
+                    values: [response.answers.map((a) => a.answer)],
+                },
+            });
+
+            // Store response in Redis
             const formResponses = (await keyv.get(interaction.user.id)) || [];
             formResponses.push(response);
             await keyv.set(interaction.user.id, formResponses);
