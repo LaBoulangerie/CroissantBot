@@ -83,6 +83,14 @@ const Player: Command = {
             });
         }
 
+        if (player.data.resident.nation) {
+            playerEmbed.addFields({
+                name: "🚩 Nation",
+                value: player.data.resident.nation.name,
+                inline: true,
+            });
+        }
+
         if (player.data.resident.nationRanks.length) {
             playerEmbed.addFields({
                 name: "🚩 Rangs de nation",
