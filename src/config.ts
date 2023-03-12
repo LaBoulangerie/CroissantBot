@@ -22,6 +22,7 @@ export default {
     logChannelID: process.env.LOG_CHANNEL_ID,
     verifChannelID: process.env.VERIF_CHANNEL_ID,
     nationsCategoryID: process.env.NATIONS_CATEGORY_ID,
+    modChannelID: process.env.MOD_CHANNEL_ID,
 
     memberRoleID: process.env.MEMBER_ROLE_ID,
 

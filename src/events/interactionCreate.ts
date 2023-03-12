@@ -89,9 +89,9 @@ const InteractionCreate: Event = {
             formResponses.push(response);
             await keyv.set(interaction.user.id, formResponses);
 
-            const logChannel = client.channels.cache.get(config.logChannelID) as TextChannel;
+            const modChannel = client.channels.cache.get(config.modChannelID) as TextChannel;
 
-            logChannel.send({ embeds: [notifyEmbed] });
+            modChannel.send({ embeds: [notifyEmbed] });
 
             await interaction.reply({
                 content:
