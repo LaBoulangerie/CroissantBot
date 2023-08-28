@@ -6,15 +6,7 @@ const GuildMemberAdd: Event = {
     name: Events.GuildMemberAdd,
     once: false,
     run(client, member: GuildMember) {
-        const welcomeChannel = client.channels.cache.get(config.welcomeChannelID) as TextChannel;
-
         const logChannel = client.channels.cache.get(config.logChannelID) as TextChannel;
-
-        const welcomeEmbed = new EmbedBuilder()
-            .setTitle(`👋 Bienvenue ${member.displayName} !`)
-            .setColor(Colors.Green);
-
-        welcomeChannel.send({ embeds: [welcomeEmbed] });
 
         const logEmbed = new EmbedBuilder()
             .setTitle(`➡ ${member.displayName}`)

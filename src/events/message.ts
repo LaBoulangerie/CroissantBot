@@ -1,4 +1,4 @@
-import { EmbedBuilder, Events, Message, TextChannel } from "discord.js";
+import { Colors, EmbedBuilder, Events, Message, TextChannel } from "discord.js";
 import config from "../config";
 import { Event } from "../types/event";
 
@@ -51,12 +51,19 @@ const MessageCreate: Event = {
                 }
 
                 const logChannel = client.channels.cache.get(config.logChannelID) as TextChannel;
-
                 const logEmbed = new EmbedBuilder()
                     .setColor(config.color)
                     .setTitle(`🍞 ${message.member.displayName}`)
                     .setDescription(`<@${message.author.id}> est devenu membre !`);
                 logChannel.send({ embeds: [logEmbed] });
+
+                const welcomeChannel = client.channels.cache.get(
+                    config.welcomeChannelID
+                ) as TextChannel;
+                const welcomeEmbed = new EmbedBuilder()
+                    .setTitle(`👋 Bienvenue ${message.member.displayName} !`)
+                    .setColor(Colors.Green);
+                welcomeChannel.send({ embeds: [welcomeEmbed] });
             } else {
                 message.react("❌");
                 setTimeout(() => message.delete(), 3000);
