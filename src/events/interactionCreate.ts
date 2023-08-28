@@ -51,7 +51,7 @@ const InteractionCreate: Event = {
                 .setTitle(`Réponse au formulaire ${inlineCode(form.id)}`)
                 .setColor(Colors.DarkPurple)
                 .setAuthor({
-                    name: interaction.user.tag,
+                    name: interaction.user.username,
                     iconURL: interaction.user.avatarURL(),
                 });
 

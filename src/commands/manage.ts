@@ -56,7 +56,7 @@ const Manage: Command = {
                                 .setTitle(`Réponse au formulaire ${inlineCode(response.form.id)}`)
                                 .setColor(Colors.DarkPurple)
                                 .setAuthor({
-                                    name: givenUser.tag,
+                                    name: givenUser.username,
                                     iconURL: givenUser.avatarURL(),
                                 })
                                 .setTimestamp(new Date(response.timestamp));
@@ -83,7 +83,7 @@ const Manage: Command = {
                         for await (const [key, value] of keyv.iterator()) {
                             const v = value as Array<FormResponse>;
                             formListEmbed.addFields({
-                                name: (await client.users.fetch(key)).tag,
+                                name: (await client.users.fetch(key)).username,
                                 value: v
                                     .map(
                                         (r) =>
