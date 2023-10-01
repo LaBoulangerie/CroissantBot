@@ -8,8 +8,8 @@ import {
 import { Command } from "../types/command";
 import fetcher from "../fetcher";
 import { isUuid } from "../common/uuid";
-import { ApiResponse } from "openapi-typescript-fetch";
 import { usernameFromUuid, uuidFromUsername } from "../common/mojang";
+import config from "../config";
 
 const Donors: Command = {
     data: new SlashCommandBuilder()
@@ -59,34 +59,38 @@ const Donors: Command = {
         else if (!body["name"]) body["name"] = await usernameFromUuid(body["uuid"]);
 
         const answerEmbed = new EmbedBuilder();
-        let response: ApiResponse;
+        let response: Response;
 
         switch (action) {
             case "add":
-                const addDonor = fetcher.path("/donors").method("post").create();
-                response = await addDonor({ ...body });
+                response = await fetch(config.apiBaseURL + "/donors", {
+                    method: "POST",
+                    body: JSON.stringify(body),
+                    headers: {
+                        Authorization: "Bearer " + config.apiToken,
+                    },
+                });
                 answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(identifier)} dans les donateurs`);
                 answerEmbed.setColor(Colors.Green);
                 break;
             case "delete":
-                const deleteDonor = fetcher.path("/donors").method("delete").create();
+                await fetch(config.apiBaseURL + "/donors", {
+                    method: "DELETE",
+                    body: JSON.stringify(body),
+                    headers: {
+                        Authorization: "Bearer " + config.apiToken,
+                    },
+                });
                 answerEmbed.setTitle(
                     `🥞 Suppression de ${inlineCode(identifier)} dans les donateurs`
                 );
                 answerEmbed.setColor(Colors.Red);
-                response = await deleteDonor({ ...body });
                 break;
             default:
                 return;
         }
-
-        answerEmbed.addFields({
-            name: "Status code",
-            value: inlineCode(response.status.toString()),
-            inline: true,
-        });
-
-        return await interaction.reply({ embeds: [answerEmbed] });
+        console.log(response);
+        return await interaction.editReply({ embeds: [answerEmbed] });
     },
 
     async autocomplete(client, interaction) {

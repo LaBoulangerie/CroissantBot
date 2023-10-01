@@ -1,5 +1,5 @@
 import { Colors, EmbedBuilder, hyperlink, inlineCode, SlashCommandBuilder, time } from "discord.js";
-import { ApiResponse } from "openapi-typescript-fetch";
+import { ApiResponse } from "@qdrant/openapi-typescript-fetch";
 import config from "../config";
 import fetcher from "../fetcher";
 import { Command } from "../types/command";

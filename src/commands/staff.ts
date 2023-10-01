@@ -8,8 +8,8 @@ import {
 import { Command } from "../types/command";
 import fetcher from "../fetcher";
 import { isUuid } from "../common/uuid";
-import { ApiResponse } from "openapi-typescript-fetch";
 import { usernameFromUuid, uuidFromUsername } from "../common/mojang";
+import config from "../config";
 
 const Staff: Command = {
     data: new SlashCommandBuilder()
@@ -68,32 +68,35 @@ const Staff: Command = {
         else if (!body["name"]) body["name"] = await usernameFromUuid(body["uuid"]);
 
         const answerEmbed = new EmbedBuilder();
-        let response: ApiResponse;
 
         switch (action) {
             case "add":
-                const addStaff = fetcher.path("/staff").method("post").create();
-                response = await addStaff({ ...body });
+                await fetch(config.apiBaseURL + "/staff", {
+                    method: "POST",
+                    body: JSON.stringify(body),
+                    headers: {
+                        Authorization: "Bearer " + config.apiToken,
+                    },
+                });
                 answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(identifier)} dans le staff`);
                 answerEmbed.setColor(Colors.Green);
                 break;
             case "delete":
-                const deleteStaff = fetcher.path("/staff").method("delete").create();
+                await fetch(config.apiBaseURL + "/staff", {
+                    method: "DELETE",
+                    body: JSON.stringify(body),
+                    headers: {
+                        Authorization: "Bearer " + config.apiToken,
+                    },
+                });
                 answerEmbed.setTitle(`🥞 Suppression de ${inlineCode(identifier)} dans le staff`);
                 answerEmbed.setColor(Colors.Red);
-                response = await deleteStaff({ ...body });
                 break;
             default:
                 return;
         }
 
-        answerEmbed.addFields({
-            name: "Status code",
-            value: inlineCode(response.status.toString()),
-            inline: true,
-        });
-
-        return await interaction.reply({ embeds: [answerEmbed] });
+        return await interaction.editReply({ embeds: [answerEmbed] });
     },
 
     async autocomplete(client, interaction) {

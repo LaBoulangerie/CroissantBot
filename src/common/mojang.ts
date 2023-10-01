@@ -2,7 +2,7 @@ import { addUuidHyphens } from "./uuid";
 
 export const uuidFromUsername = async (username: string) => {
     return addUuidHyphens(
-        (await (await fetch("https://api.mojang.com/users/profile/minecraft/" + username)).json())[
+        (await (await fetch("https://api.mojang.com/users/profiles/minecraft/" + username)).json())[
             "id"
         ]
     );
