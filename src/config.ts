@@ -29,4 +29,6 @@ export default {
     fileExtension: process.env.FILE_EXTENSION,
 
     redisDb: process.env.REDIS_DB,
+
+    apiToken: process.env.API_TOKEN,
 };
