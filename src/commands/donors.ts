@@ -1,4 +1,10 @@
-import { Colors, EmbedBuilder, SlashCommandBuilder, inlineCode } from "discord.js";
+import {
+    Colors,
+    EmbedBuilder,
+    PermissionFlagsBits,
+    SlashCommandBuilder,
+    inlineCode,
+} from "discord.js";
 import { Command } from "../types/command";
 import fetcher from "../fetcher";
 import { isUuid } from "../common/uuid";
@@ -12,6 +18,7 @@ const Donors: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("add")
+                .setDescription("Add a donor")
                 .addStringOption((option) =>
                     option
                         .setName("identifier")
@@ -26,6 +33,7 @@ const Donors: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("delete")
+                .setDescription("Delete a donor")
                 .addStringOption((option) =>
                     option
                         .setName("identifier")
@@ -34,6 +42,7 @@ const Donors: Command = {
                         .setRequired(true)
                 )
         )
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .toJSON(),
 
     async run(client, interaction) {

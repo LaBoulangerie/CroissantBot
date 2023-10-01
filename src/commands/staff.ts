@@ -1,4 +1,10 @@
-import { Colors, EmbedBuilder, SlashCommandBuilder, inlineCode } from "discord.js";
+import {
+    Colors,
+    EmbedBuilder,
+    PermissionFlagsBits,
+    SlashCommandBuilder,
+    inlineCode,
+} from "discord.js";
 import { Command } from "../types/command";
 import fetcher from "../fetcher";
 import { isUuid } from "../common/uuid";
@@ -12,6 +18,7 @@ const Staff: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("add")
+                .setDescription("Add a staff")
                 .addStringOption((option) =>
                     option
                         .setName("identifier")
@@ -35,6 +42,7 @@ const Staff: Command = {
         .addSubcommand((subcommand) =>
             subcommand
                 .setName("delete")
+                .setDescription("Delete a staff")
                 .addStringOption((option) =>
                     option
                         .setName("identifier")
@@ -43,6 +51,7 @@ const Staff: Command = {
                         .setRequired(true)
                 )
         )
+        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .toJSON(),
 
     async run(client, interaction) {
