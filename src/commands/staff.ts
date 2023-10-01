@@ -1,8 +1,9 @@
 import { Colors, EmbedBuilder, SlashCommandBuilder, inlineCode } from "discord.js";
 import { Command } from "../types/command";
 import fetcher from "../fetcher";
-import { isUUID } from "../common/uuid";
+import { isUuid } from "../common/uuid";
 import { ApiResponse } from "openapi-typescript-fetch";
+import { usernameFromUuid, uuidFromUsername } from "../common/mojang";
 
 const Staff: Command = {
     data: new SlashCommandBuilder()
@@ -51,8 +52,11 @@ const Staff: Command = {
         const identifier = interaction.options.getString("identifier");
         const role = interaction.options.getString("role");
 
-        const body = isUUID(identifier) ? { uuid: identifier } : { name: identifier };
+        const body = isUuid(identifier) ? { uuid: identifier } : { name: identifier };
         body["type"] = role;
+
+        if (!body["uuid"]) body["uuid"] = await uuidFromUsername(body["name"]);
+        else if (!body["name"]) body["name"] = await usernameFromUuid(body["uuid"]);
 
         const answerEmbed = new EmbedBuilder();
         let response: ApiResponse;
