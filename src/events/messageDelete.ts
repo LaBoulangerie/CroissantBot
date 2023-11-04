@@ -5,6 +5,8 @@ const MessageDelete: Event = {
     name: Events.MessageDelete,
     once: false,
     run(client, message: Message) {
+        if (message.author.bot) return;
+
         const logChannel = client.channels.cache.get(process.env.LOG_CHANNEL_ID) as TextChannel;
 
         const logEmbed = new EmbedBuilder()
