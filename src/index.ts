@@ -13,6 +13,7 @@ const client = new ExtendedClient({
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildVoiceStates,
     ],
 });
 

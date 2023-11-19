@@ -1,6 +1,5 @@
 import {
     AutocompleteInteraction,
-    CategoryChannel,
     ChannelType,
     ChatInputCommandInteraction,
     Events,
@@ -69,7 +68,7 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
             let actualLimit: number = null;
             if (Number.isFinite(+limit)) actualLimit = parseInt(limit);
 
-            const actualName = (isRp ? "📜" : "🗣️") + name;
+            const actualName = (isRp ? "📜" : "🗣️") + " " + name;
 
             const voiceChannel = await interaction.guild.channels.create({
                 name: actualName,
@@ -81,7 +80,10 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
 
             client.voiceChannelIds.push(voiceChannel.id);
 
-            await interaction.reply(`🎉 Salon vocal créé ! <#${voiceChannel.id}>`);
+            await interaction.reply({
+                ephemeral: true,
+                content: `🎉 Salon vocal créé ! <#${voiceChannel.id}>`,
+            });
             break;
 
         default:
