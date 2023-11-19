@@ -5,6 +5,7 @@ import formIds from "../form-ids";
 const Grief: Form = {
     id: "grief",
     visible: true,
+    isModeration: true,
     googleId: formIds.grief,
     title: "Demande de dérogation de grief",
     inputs: [

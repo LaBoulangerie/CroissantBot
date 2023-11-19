@@ -1,105 +1,91 @@
-import { Colors, EmbedBuilder, Events, inlineCode, Interaction, TextChannel } from "discord.js";
-import keyv from "../db/keyv";
-import config from "../config";
+import {
+    AutocompleteInteraction,
+    CategoryChannel,
+    ChannelType,
+    ChatInputCommandInteraction,
+    Events,
+    Interaction,
+    ModalSubmitInteraction,
+} from "discord.js";
 import { Event } from "../types/event";
-import { FormInputAnswer, FormResponse } from "../types/form";
-import { sheets } from "..";
-import { google } from "googleapis";
-import path from "path";
+import { ExtendedClient } from "../types/extendedClient";
+import { submitModerationForm } from "../common/modal";
+import config from "../config";
 
 const InteractionCreate: Event = {
     name: Events.InteractionCreate,
     once: false,
     async run(client, interaction: Interaction) {
-        if (interaction.isChatInputCommand()) {
-            const command = client.commands.get(interaction.commandName);
-
-            if (!command) {
-                console.error(`No command matching ${interaction.commandName} was found.`);
-                return;
-            }
-
-            try {
-                command.run(client, interaction);
-            } catch (error) {
-                console.error(`Error executing ${interaction.commandName}`);
-                console.error(error);
-            }
-        } else if (interaction.isAutocomplete()) {
-            const command = client.commands.get(interaction.commandName);
-
-            if (!command) {
-                console.error(`No command matching ${interaction.commandName} was found.`);
-                return;
-            }
-
-            try {
-                await command.autocomplete(client, interaction);
-            } catch (error) {
-                console.error(error);
-            }
-        } else if (interaction.isModalSubmit()) {
-            const form = client.forms.get(interaction.customId);
-
-            const response: FormResponse = {
-                form,
-                timestamp: new Date(),
-                answers: [],
-            };
-
-            const notifyEmbed = new EmbedBuilder()
-                .setTitle(`Réponse au formulaire ${inlineCode(form.id)}`)
-                .setColor(Colors.DarkPurple)
-                .setAuthor({
-                    name: interaction.user.username,
-                    iconURL: interaction.user.avatarURL(),
-                });
-
-            for (const input of form.inputs) {
-                const inputResponse = interaction.fields.getTextInputValue(input.id);
-                const answer: FormInputAnswer = {
-                    id: input.id,
-                    answer: inputResponse,
-                };
-                response.answers.push(answer);
-                notifyEmbed.addFields({ name: input.label, value: inputResponse });
-            }
-            // Append data to google sheet
-            const auth = new google.auth.GoogleAuth({
-                keyFile: path.join(__dirname, "../../google_keys.json"),
-                scopes: [
-                    "https://www.googleapis.com/auth/drive",
-                    "https://www.googleapis.com/auth/spreadsheets",
-                ],
-            });
-
-            google.options({ auth });
-
-            await sheets.spreadsheets.values.append({
-                spreadsheetId: form.googleId,
-                valueInputOption: "USER_ENTERED",
-                range: "A2:Z",
-                requestBody: {
-                    values: [response.answers.map((a) => a.answer)],
-                },
-            });
-
-            // Store response in Redis
-            const formResponses = (await keyv.get(interaction.user.id)) || [];
-            formResponses.push(response);
-            await keyv.set(interaction.user.id, formResponses);
-
-            const modChannel = client.channels.cache.get(config.modChannelID) as TextChannel;
-
-            modChannel.send({ embeds: [notifyEmbed] });
-
-            await interaction.reply({
-                content:
-                    "Votre réponse au formulaire a été transmise à l'équipe, vous aurez une réponse prochainement !",
-                ephemeral: true,
-            });
-        }
+        interaction.isChatInputCommand() && handleCommand(client, interaction);
+        interaction.isAutocomplete() && handleAutocomplete(client, interaction);
+        interaction.isModalSubmit() && handleModalSubmit(client, interaction);
     },
+};
+
+const handleCommand = async (client: ExtendedClient, interaction: ChatInputCommandInteraction) => {
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) {
+        console.error(`No command matching ${interaction.commandName} was found.`);
+        return;
+    }
+
+    try {
+        command.run(client, interaction);
+    } catch (error) {
+        console.error(`Error executing ${interaction.commandName}`);
+        console.error(error);
+    }
+};
+
+const handleAutocomplete = async (client: ExtendedClient, interaction: AutocompleteInteraction) => {
+    const command = client.commands.get(interaction.commandName);
+
+    if (!command) {
+        return console.error(`No command matching ${interaction.commandName} was found.`);
+    }
+
+    try {
+        await command.autocomplete(client, interaction);
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmitInteraction) => {
+    const form = client.forms.get(interaction.customId);
+
+    if (form.isModeration) return await submitModerationForm(client, interaction, form);
+
+    switch (interaction.customId) {
+        case "voice-channel":
+            const name = interaction.fields.getTextInputValue("name");
+            const isRp = interaction.fields.getTextInputValue("isrp");
+            const limit = interaction.fields.getTextInputValue("limit");
+
+            let isReallyRp = false;
+            if (isRp == "oui") isReallyRp = true;
+
+            let actualLimit: number = null;
+            if (Number.isFinite(+limit)) actualLimit = parseInt(limit);
+
+            const actualName = isRp ? "📜" : "🗣️" + name;
+
+            const voiceChannel = await interaction.guild.channels.create({
+                name: actualName,
+                type: ChannelType.GuildVoice,
+                parent: interaction.guild.channels.cache.get(
+                    config.voiceCategoryID
+                ) as CategoryChannel,
+                userLimit: actualLimit,
+            });
+
+            client.voiceChannelIds.push(voiceChannel.id);
+            break;
+
+        default:
+            break;
+    }
 };
 
 export default InteractionCreate;

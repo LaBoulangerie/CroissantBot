@@ -2,8 +2,9 @@ import { TextInputStyle } from "discord.js";
 
 export type Form = {
     id: string;
-    googleId: string | undefined;
+    googleId?: string;
     visible: Boolean;
+    isModeration: Boolean;
     title: string;
     inputs: Array<FormInput>;
 };

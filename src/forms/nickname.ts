@@ -5,6 +5,7 @@ import formIds from "../form-ids";
 const Nickname: Form = {
     id: "nickname",
     visible: true,
+    isModeration: true,
     googleId: formIds.nickname,
     title: "Demande de surnom",
     inputs: [

@@ -5,6 +5,7 @@ import formIds from "../form-ids";
 const CasusBelli: Form = {
     id: "casus-belli",
     visible: true,
+    isModeration: true,
     googleId: formIds.casusBelli,
     title: "Casus Belli",
     inputs: [

@@ -5,6 +5,7 @@ import formIds from "../form-ids";
 const Alt: Form = {
     id: "doublecompte",
     visible: true,
+    isModeration: true,
     googleId: formIds.alt,
     title: "Déclaration de double compte",
     inputs: [

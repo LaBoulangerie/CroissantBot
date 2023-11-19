@@ -1,12 +1,6 @@
-import {
-    ActionRowBuilder,
-    inlineCode,
-    ModalActionRowComponentBuilder,
-    ModalBuilder,
-    SlashCommandBuilder,
-    TextInputBuilder,
-} from "discord.js";
+import { inlineCode, SlashCommandBuilder } from "discord.js";
 import { Command } from "../types/command";
+import { formToModal } from "../common/modal";
 
 const Form: Command = {
     data: new SlashCommandBuilder()
@@ -35,28 +29,8 @@ const Form: Command = {
         }
 
         const form = client.forms.get(formName);
-
-        const formModal = new ModalBuilder().setCustomId(form.id).setTitle(form.title);
-
-        for (const input of form.inputs) {
-            const textInput = new TextInputBuilder()
-                .setCustomId(input.id)
-                .setLabel(input.label)
-                .setStyle(input.style)
-                .setRequired(input.required);
-
-            if (input.placeholder) textInput.setPlaceholder(input.placeholder);
-            if (input.minLength) textInput.setMinLength(input.minLength);
-            if (input.maxLength) textInput.setMaxLength(input.maxLength);
-            if (input.value) textInput.setValue(input.value);
-
-            const actionRow = new ActionRowBuilder<ModalActionRowComponentBuilder>().addComponents(
-                textInput
-            );
-            formModal.addComponents(actionRow);
-        }
-
-        await interaction.showModal(formModal);
+        const modal = formToModal(form);
+        await interaction.showModal(modal);
     },
 
     async autocomplete(client, interaction) {
