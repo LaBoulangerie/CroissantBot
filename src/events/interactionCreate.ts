@@ -2,9 +2,13 @@ import {
     AutocompleteInteraction,
     ChannelType,
     ChatInputCommandInteraction,
+    Colors,
+    EmbedBuilder,
     Events,
     Interaction,
     ModalSubmitInteraction,
+    TextChannel,
+    inlineCode,
 } from "discord.js";
 import { Event } from "../types/event";
 import { ExtendedClient } from "../types/extendedClient";
@@ -84,6 +88,13 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
                 ephemeral: true,
                 content: `🎉 Salon vocal créé ! <#${voiceChannel.id}>`,
             });
+
+            const logChannel = client.channels.cache.get(config.logChannelID) as TextChannel;
+            const logEmbed = new EmbedBuilder()
+                .setTitle(`🔊 Salon personnalisé créé par ${interaction.user.username}`)
+                .setDescription(`${inlineCode(name)} <#${voiceChannel.id}`)
+                .setColor(Colors.Blurple);
+            await logChannel.send({ embeds: [logEmbed] });
             break;
 
         default:
