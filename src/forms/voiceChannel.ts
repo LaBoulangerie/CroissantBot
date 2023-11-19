@@ -4,7 +4,7 @@ import { Form } from "../types/form";
 const VoiceChannel: Form = {
     id: "voice-channel",
     visible: false,
-    isModeration: true,
+    isModeration: false,
     title: "Demande de surnom",
     inputs: [
         {
@@ -13,7 +13,6 @@ const VoiceChannel: Form = {
             style: TextInputStyle.Paragraph,
             required: true,
             placeholder: "e.g. forum des brasseurs",
-            minLength: 16,
             maxLength: 128,
         },
         {
