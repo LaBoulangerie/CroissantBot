@@ -69,18 +69,21 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
             let actualLimit: number = null;
             if (Number.isFinite(+limit)) actualLimit = parseInt(limit);
 
-            const actualName = isRp ? "📜" : "🗣️" + name;
+            const actualName = (isRp ? "📜" : "🗣️") + name;
 
             const voiceChannel = await interaction.guild.channels.create({
                 name: actualName,
                 type: ChannelType.GuildVoice,
-                parent: interaction.guild.channels.cache.get(
-                    config.voiceCategoryID
-                ) as CategoryChannel,
                 userLimit: actualLimit,
             });
 
+            voiceChannel.setParent(
+                client.channels.cache.get(config.voiceCategoryID) as CategoryChannel
+            );
+
             client.voiceChannelIds.push(voiceChannel.id);
+
+            await interaction.reply(`🎉 Salon vocal créé ! <#${voiceChannel.id}`);
             break;
 
         default:

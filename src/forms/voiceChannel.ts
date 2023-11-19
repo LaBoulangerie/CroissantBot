@@ -5,7 +5,7 @@ const VoiceChannel: Form = {
     id: "voice-channel",
     visible: false,
     isModeration: false,
-    title: "Demande de surnom",
+    title: "Salon vocal personnalisé",
     inputs: [
         {
             id: "name",
