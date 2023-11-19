@@ -18,37 +18,33 @@ const client = new ExtendedClient({
     ],
 });
 
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs
-    .readdirSync(commandsPath)
-    .filter((file) => file.endsWith(config.fileExtension));
+const forEachFilesIn = (dirPath: string, lambda: (f: string) => void) => {
+    const joinedPath = path.join(__dirname, dirPath);
+    const files = fs.readdirSync(joinedPath).filter((file) => file.endsWith(config.fileExtension));
+    for (const file of files) {
+        const filePath = path.join(joinedPath, file);
+        lambda(filePath);
+    }
+};
 
-for (const file of commandFiles) {
-    const filePath = path.join(commandsPath, file);
-    const command: Command = require(filePath).default;
+forEachFilesIn("commands", (f) => {
+    const command: Command = require(f).default;
     client.commands.set(command.data.name, command);
     console.log(`Registered command ${command.data.name}`);
-}
+});
 
-const eventsPath = path.join(__dirname, "events");
-const eventFiles = fs.readdirSync(eventsPath).filter((file) => file.endsWith(config.fileExtension));
-for (const file of eventFiles) {
-    const filePath = path.join(eventsPath, file);
-    const event = require(filePath).default;
+forEachFilesIn("events", (f) => {
+    const event = require(f).default;
     event.once
         ? client.once(event.name, (...args) => event.run(client, ...args))
         : client.on(event.name, (...args) => event.run(client, ...args));
     console.log(`Registered event ${event.name}`);
-}
+});
 
-const formsPath = path.join(__dirname, "forms");
-const formFiles = fs.readdirSync(formsPath).filter((file) => file.endsWith(config.fileExtension));
-for (const file of formFiles) {
-    const filePath = path.join(formsPath, file);
-    const form: Form = require(filePath).default;
-
+forEachFilesIn("forms", (f) => {
+    const form: Form = require(f).default;
     client.forms.set(form.id, form);
     console.log(`Registered form ${form.id}`);
-}
+});
 
 client.login(config.discordToken);
