@@ -1,6 +1,6 @@
 node_modules
 package-lock.json
 .env
+form-ids.ts
 dist
-forms/
 google_keys.json
