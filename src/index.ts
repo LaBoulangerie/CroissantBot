@@ -7,8 +7,6 @@ import { ExtendedClient } from "./types/extendedClient";
 import { Form } from "./types/form";
 import { google } from "googleapis";
 
-export const sheets = google.sheets("v4");
-
 const client = new ExtendedClient({
     intents: [
         GatewayIntentBits.Guilds,
@@ -17,6 +15,9 @@ const client = new ExtendedClient({
         GatewayIntentBits.GuildMembers,
     ],
 });
+
+const sheets = google.sheets("v4");
+client.googleSheets = sheets;
 
 const forEachFilesIn = (dirPath: string, lambda: (f: string) => void) => {
     const joinedPath = path.join(__dirname, dirPath);

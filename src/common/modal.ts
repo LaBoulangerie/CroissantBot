@@ -13,7 +13,6 @@ import { Form, FormInputAnswer, FormResponse } from "../types/form";
 import { google } from "googleapis";
 import path from "path";
 import { ExtendedClient } from "../types/extendedClient";
-import { sheets } from "..";
 import keyv from "../db/keyv";
 import config from "../config";
 
@@ -80,7 +79,7 @@ export const submitModerationForm = async (
 
     google.options({ auth });
 
-    await sheets.spreadsheets.values.append({
+    await client.googleSheets.spreadsheets.values.append({
         spreadsheetId: form.googleId,
         valueInputOption: "USER_ENTERED",
         range: "A2:Z",
