@@ -77,13 +77,11 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
                 userLimit: actualLimit,
             });
 
-            voiceChannel.setParent(
-                client.channels.cache.get(config.voiceCategoryID) as CategoryChannel
-            );
+            voiceChannel.setParent(config.voiceCategoryID);
 
             client.voiceChannelIds.push(voiceChannel.id);
 
-            await interaction.reply(`🎉 Salon vocal créé ! <#${voiceChannel.id}`);
+            await interaction.reply(`🎉 Salon vocal créé ! <#${voiceChannel.id}>`);
             break;
 
         default:
