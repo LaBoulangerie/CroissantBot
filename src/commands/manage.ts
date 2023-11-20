@@ -31,6 +31,8 @@ const Manage: Command = {
         .setDMPermission(false)
         .toJSON(),
     async run(client, interaction) {
+        if (interaction.channel.isDMBased()) return;
+
         const service = interaction.options.getSubcommandGroup();
         const action = interaction.options.getSubcommand();
 

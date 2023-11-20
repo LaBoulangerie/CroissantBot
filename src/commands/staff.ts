@@ -55,6 +55,7 @@ const Staff: Command = {
         .toJSON(),
 
     async run(client, interaction) {
+        if (interaction.channel.isDMBased()) return;
         await interaction.deferReply();
 
         const action = interaction.options.getSubcommand();
