@@ -96,14 +96,17 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
                     {
                         name: "Nom",
                         value: `${inlineCode(name)} <#${voiceChannel.id}>`,
+                        inline: true,
                     },
                     {
                         name: "Est RP ?",
                         value: isReallyRp ? "oui" : "non",
+                        inline: true,
                     },
                     {
                         name: "Limite de connexion",
                         value: actualLimit.toString(),
+                        inline: true,
                     }
                 )
                 .setColor(Colors.Blurple);
