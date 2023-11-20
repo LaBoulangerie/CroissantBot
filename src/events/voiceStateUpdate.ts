@@ -7,7 +7,7 @@ const VoiceStateUpdate: Event = {
     run(client, oldState: VoiceState, newState: VoiceState) {
         // Deleting custom voice chat if there's no one in it anymore
         const voiceChannelIds = Array.from(client.voiceChannels.values());
-        const memberAmout = newState.channel.members.size;
+        const memberAmout = oldState?.channel?.members?.size;
 
         if (
             newState.channel === null &&

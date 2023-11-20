@@ -70,7 +70,7 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
             if (isRp == "oui") isReallyRp = true;
 
             let actualLimit: number = null;
-            if (Number.isFinite(+limit)) actualLimit = parseInt(limit);
+            if (Number.isFinite(+limit)) actualLimit = Math.min(parseInt(limit), 99);
 
             const actualName = (isRp ? "📜" : "🗣️") + " " + name;
 
@@ -92,7 +92,20 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
             const logChannel = client.channels.cache.get(config.logChannelID) as TextChannel;
             const logEmbed = new EmbedBuilder()
                 .setTitle(`🔊 Salon personnalisé créé par ${interaction.user.username}`)
-                .setDescription(`${inlineCode(name)} <#${voiceChannel.id}`)
+                .addFields(
+                    {
+                        name: "Nom",
+                        value: `${inlineCode(name)} <#${voiceChannel.id}>`,
+                    },
+                    {
+                        name: "Est RP ?",
+                        value: isReallyRp ? "oui" : "non",
+                    },
+                    {
+                        name: "Limite de connexion",
+                        value: actualLimit.toString(),
+                    }
+                )
                 .setColor(Colors.Blurple);
             await logChannel.send({ embeds: [logEmbed] });
             break;
