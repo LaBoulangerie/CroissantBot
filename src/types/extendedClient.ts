@@ -6,6 +6,6 @@ import { sheets_v4 } from "googleapis";
 export class ExtendedClient extends Client {
     commands: Collection<string, Command> = new Collection();
     forms: Collection<string, Form> = new Collection();
-    voiceChannelIds: Array<string> = new Array();
+    voiceChannels: Collection<string, string> = new Collection();
     googleSheets: sheets_v4.Sheets;
 }

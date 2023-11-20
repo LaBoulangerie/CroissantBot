@@ -82,7 +82,7 @@ const handleModalSubmit = async (client: ExtendedClient, interaction: ModalSubmi
 
             voiceChannel.setParent(config.voiceCategoryID);
 
-            client.voiceChannelIds.push(voiceChannel.id);
+            client.voiceChannels.set(interaction.user.id, voiceChannel.id);
 
             await interaction.reply({
                 ephemeral: true,

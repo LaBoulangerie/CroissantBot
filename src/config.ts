@@ -24,6 +24,7 @@ export default {
     nationsCategoryID: process.env.NATIONS_CATEGORY_ID,
     modChannelID: process.env.MOD_CHANNEL_ID,
     voiceCategoryID: process.env.VOICE_CATEGORY_ID,
+    voiceChannelsLimit: parseInt(process.env.VOICE_CHANNELS_LIMIT),
 
     memberRoleID: process.env.MEMBER_ROLE_ID,
 
