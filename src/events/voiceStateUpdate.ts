@@ -15,6 +15,7 @@ const VoiceStateUpdate: Event = {
             memberAmout == 0
         ) {
             const voiceChannel = client.channels.cache.get(oldState.channelId);
+            client.voiceChannels.delete(client.voiceChannels.find((v) => v == voiceChannel.id));
             voiceChannel.delete();
         }
     },
