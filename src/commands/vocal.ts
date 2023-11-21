@@ -12,7 +12,10 @@ const Vocal: Command = {
         const voiceChannels = client.voiceChannels;
 
         if (voiceChannels.size >= config.voiceChannelsLimit) {
-            return await interaction.reply(`❌ Il y a trop de salons personnalisés actifs.`);
+            return await interaction.reply({
+                content: `❌ Il y a trop de salons personnalisés actifs.`,
+                ephemeral: true,
+            });
         }
 
         config.voiceChannelsLimit;
@@ -20,9 +23,12 @@ const Vocal: Command = {
         const userId = interaction.user.id;
 
         if (voiceChannelUsers.includes(interaction.user.id)) {
-            return await interaction.reply(
-                `❌ Vous avez déjà créé un salon personnalisé (<#${voiceChannels.get(userId)}>.`
-            );
+            return await interaction.reply({
+                content: `❌ Vous avez déjà créé un salon personnalisé (<#${voiceChannels.get(
+                    userId
+                )}>).`,
+                ephemeral: true,
+            });
         }
 
         const form = client.forms.get("voice-channel");
