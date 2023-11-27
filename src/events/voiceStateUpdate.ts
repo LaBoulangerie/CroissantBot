@@ -9,13 +9,9 @@ const VoiceStateUpdate: Event = {
         const voiceChannelIds = Array.from(client.voiceChannels.values());
         const memberAmout = oldState?.channel?.members?.size;
 
-        if (
-            newState.channel === null &&
-            voiceChannelIds.includes(oldState.channelId) &&
-            memberAmout == 0
-        ) {
+        if (voiceChannelIds.includes(oldState.channelId) && memberAmout == 0) {
             const voiceChannel = client.channels.cache.get(oldState.channelId);
-            client.voiceChannels.delete(client.voiceChannels.find((v) => v == voiceChannel.id));
+            client.voiceChannels.delete(client.voiceChannels.findKey((v) => v == voiceChannel.id));
             voiceChannel.delete();
         }
     },
