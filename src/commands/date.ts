@@ -34,7 +34,8 @@ const GDate: Command = {
         const month = months[(date.month - 1) % months.length];
         const nMonthsSinceFirstDay =
             (date.year - firstDay.year) * 12 - firstDay.month + 1 + date.month;
-        const year = Math.ceil(nMonthsSinceFirstDay / 4);
+        let year = Math.ceil(nMonthsSinceFirstDay / 4);
+        if (year <= 0) year--; // year 0 doesn't exist in Gaiartian calendar
 
         const dateEmbed = new EmbedBuilder()
             .setTitle(`🗓️ Date Gaiartoise du ${dateString}`)
