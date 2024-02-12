@@ -1,6 +1,7 @@
-import { Colors, EmbedBuilder, Events, Message, TextChannel } from "discord.js";
+import { Colors, EmbedBuilder, Events, Message, TextChannel, inlineCode } from "discord.js";
 import config from "../config";
 import { Event } from "../types/event";
+import fetcher from "../fetcher";
 
 const MessageCreate: Event = {
     name: Events.MessageCreate,
@@ -19,6 +20,13 @@ const MessageCreate: Event = {
                 message.react("✅");
                 setTimeout(() => message.delete(), 3000);
 
+                let version = "1.20.2";
+                const getStatus = fetcher.path("/server").method("get").create();
+
+                try {
+                    version = (await getStatus({})).data.bukkitVersion.split("-")[0];
+                } catch (ignored) {}
+
                 const infoEmbed = new EmbedBuilder()
                     .setTitle(
                         `${process.env.BAGUETTE_EMOJI} Bienvenue ${message.author.username} !`
@@ -30,7 +38,7 @@ const MessageCreate: Event = {
                     .addFields(
                         {
                             name: "📌 IP et version",
-                            value: "`mc.laboulangerie.net` en 1.19",
+                            value: `${inlineCode("mc.laboulangerie.net")} en ${version}`,
                             inline: true,
                         },
                         {
