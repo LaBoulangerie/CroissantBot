@@ -30,7 +30,10 @@ const Mute: Command = {
         const guildMember = client.guilds.cache.get(config.guildID).members.cache.get(user.id);
 
         if (!guildMember) {
-            await interaction.reply({ content: "Utilisateur non trouvé sur le serveur." });
+            await interaction.reply({
+                content: "Utilisateur non trouvé sur le serveur.",
+                ephemeral: true,
+            });
         }
 
         guildMember.voice.setMute(true);
@@ -44,6 +47,10 @@ const Mute: Command = {
 
         const modChannel = client.channels.cache.get(config.modChannelID) as TextChannel;
         modChannel.send({ embeds: [muteEmbed] });
+        await interaction.reply({
+            content: `Utilisateur ${userMention(user.id)} muté.`,
+            ephemeral: true,
+        });
         setTimeout(() => {
             guildMember.voice.setMute(false);
             const endMuteEmbed = muteEmbed.setDescription(
