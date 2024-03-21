@@ -30,8 +30,15 @@ const Mute: Command = {
         const guildMember = client.guilds.cache.get(config.guildID).members.cache.get(user.id);
 
         if (!guildMember) {
-            await interaction.reply({
+            return await interaction.reply({
                 content: "Utilisateur non trouvé sur le serveur.",
+                ephemeral: true,
+            });
+        }
+
+        if (duration < 1) {
+            return await interaction.reply({
+                content: "La durée est invalide.",
                 ephemeral: true,
             });
         }
