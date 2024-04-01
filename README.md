@@ -30,6 +30,8 @@ Here are the environment variables to set:
 | `MEMBER_ROLE_ID`        |                                                          |
 | `FILE_EXTENSION`        | Files to be checked in directories on start, like ".ts"  |
 | `REDIS_DB`              | Redis connection URL, format redis://...                 |
+| `CROISSANT_IA_URL`      | Croissant IA URL, format https://...                     |
+| `CROISSANT_IA_SECRET`   | Croissant IA secret                                      |
 
 ## 📦 Deploy commands
 

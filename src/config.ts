@@ -33,4 +33,7 @@ export default {
     redisDb: process.env.REDIS_DB,
 
     apiToken: process.env.API_TOKEN,
+
+    croissantIAURL: process.env.CROISSANT_IA_URL,
+    croissantIASecret: process.env.CROISSANT_IA_SECRET,
 };
