@@ -13,6 +13,8 @@ const Ask: Command = {
         .toJSON(),
 
     async run(client, interaction) {
+        await interaction.deferReply();
+
         const question = interaction.options.getString("question", true);
 
         const url = config.croissantIAURL + "/ask";
