@@ -44,7 +44,7 @@ const Ask: Command = {
             return;
         }
 
-        await interaction.reply(response.data["answer"]);
+        await interaction.editReply(response.data["answer"]);
     },
 };
 
