@@ -9,7 +9,6 @@ import { Command } from "../types/command";
 import fetcher from "../fetcher";
 import { isUuid } from "../common/uuid";
 import { usernameFromUuid, uuidFromUsername } from "../common/mojang";
-import config from "../config";
 
 const Donors: Command = {
     data: new SlashCommandBuilder()
@@ -60,28 +59,19 @@ const Donors: Command = {
         else if (!body["name"]) body["name"] = await usernameFromUuid(body["uuid"]);
 
         const answerEmbed = new EmbedBuilder();
-        let response: Response;
 
         switch (action) {
             case "add":
-                response = await fetch(config.apiBaseURL + "/donors", {
-                    method: "POST",
-                    body: JSON.stringify(body),
-                    headers: {
-                        Authorization: "Bearer " + config.apiToken,
-                    },
-                });
+                const addDonor = fetcher.path("/donors").method("post").create();
+                await addDonor(body);
+
                 answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(identifier)} dans les donateurs`);
                 answerEmbed.setColor(Colors.Green);
                 break;
             case "delete":
-                await fetch(config.apiBaseURL + "/donors", {
-                    method: "DELETE",
-                    body: JSON.stringify(body),
-                    headers: {
-                        Authorization: "Bearer " + config.apiToken,
-                    },
-                });
+                const deleteDonor = fetcher.path("/donors").method("delete").create();
+                await deleteDonor(body);
+
                 answerEmbed.setTitle(
                     `🥞 Suppression de ${inlineCode(identifier)} dans les donateurs`
                 );
@@ -90,7 +80,6 @@ const Donors: Command = {
             default:
                 return;
         }
-        console.log(response);
         return await interaction.editReply({ embeds: [answerEmbed] });
     },
 

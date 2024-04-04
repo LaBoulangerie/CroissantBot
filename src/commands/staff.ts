@@ -9,7 +9,6 @@ import { Command } from "../types/command";
 import fetcher from "../fetcher";
 import { isUuid } from "../common/uuid";
 import { usernameFromUuid, uuidFromUsername } from "../common/mojang";
-import config from "../config";
 
 const Staff: Command = {
     data: new SlashCommandBuilder()
@@ -72,24 +71,16 @@ const Staff: Command = {
 
         switch (action) {
             case "add":
-                await fetch(config.apiBaseURL + "/staff", {
-                    method: "POST",
-                    body: JSON.stringify(body),
-                    headers: {
-                        Authorization: "Bearer " + config.apiToken,
-                    },
-                });
+                const addStaff = fetcher.path("/staff").method("post").create();
+                await addStaff(body);
+
                 answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(identifier)} dans le staff`);
                 answerEmbed.setColor(Colors.Green);
                 break;
             case "delete":
-                await fetch(config.apiBaseURL + "/staff", {
-                    method: "DELETE",
-                    body: JSON.stringify(body),
-                    headers: {
-                        Authorization: "Bearer " + config.apiToken,
-                    },
-                });
+                const deleteStaff = fetcher.path("/staff").method("delete").create();
+                await deleteStaff(body);
+
                 answerEmbed.setTitle(`🥞 Suppression de ${inlineCode(identifier)} dans le staff`);
                 answerEmbed.setColor(Colors.Red);
                 break;
