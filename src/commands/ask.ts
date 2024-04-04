@@ -26,7 +26,15 @@ const Ask: Command = {
         const username = config.croissantIASecret;
         const password = "";
 
-        const response = await axios.post(url, params, { headers, auth: { username, password } });
+        const response = await axios.post(
+            url,
+            {},
+            {
+                headers,
+                auth: { username, password },
+                params,
+            }
+        );
 
         if (response.status != 200) {
             await interaction.reply({
