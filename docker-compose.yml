@@ -5,7 +5,7 @@ services:
         depends_on:
             - redis
         volumes:
-            - ./google-keys.json:/app/google-keys.json
+            - ./google_keys.json:/app/google_keys.json
         network_mode: host
         restart: always
     redis:
