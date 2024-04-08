@@ -1,0 +1,20 @@
+services:
+    app:
+        build: .
+        env_file: .env
+        depends_on:
+            - redis
+        volumes:
+            - ./google_keys.json:/app/google_keys.json
+        network_mode: host
+        restart: always
+    redis:
+        image: redis:7.2.4-alpine
+        volumes:
+            - redis-data:/data
+        ports:
+            - "6379:6379"
+        restart: always
+
+volumes:
+    redis-data:
