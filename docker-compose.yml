@@ -4,6 +4,9 @@ services:
         env_file: .env
         depends_on:
             - redis
+        volumes:
+            - ./google-keys.json:/app/google-keys.json
+        network_mode: host
         restart: always
     redis:
         image: redis:7.2.4-alpine
