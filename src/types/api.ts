@@ -13,6 +13,10 @@ export interface paths {
     /** @description Delete staff */
     delete: operations["deleteStaff"];
   };
+  "/search/{query}": {
+    /** @description Search for player, town or nation by name */
+    get: operations["search"];
+  };
   "/player": {
     /** @description Get all players */
     get: operations["getPlayers"];
@@ -21,9 +25,13 @@ export interface paths {
     /** @description Get player with name or UUID */
     get: operations["getPlayer"];
   };
-  "/search/{query}": {
-    /** @description Search for player, town or nation by name */
-    get: operations["search"];
+  "/town": {
+    /** @description Get all towns */
+    get: operations["getTowns"];
+  };
+  "/town/{identifier}": {
+    /** @description Get town with name or UUID */
+    get: operations["getTown"];
   };
   "/donors": {
     /** @description Get donors */
@@ -32,6 +40,10 @@ export interface paths {
     post: operations["addDonor"];
     /** @description Delete donor */
     delete: operations["deleteDonor"];
+  };
+  "/vote": {
+    /** @description Get all vote sites */
+    get: operations["getVotes"];
   };
   "/nation": {
     /** @description Get all nations */
@@ -44,14 +56,6 @@ export interface paths {
   "/server": {
     /** @description Get server informations */
     get: operations["getServer"];
-  };
-  "/town": {
-    /** @description Get all towns */
-    get: operations["getTowns"];
-  };
-  "/town/{identifier}": {
-    /** @description Get town with name or UUID */
-    get: operations["getTown"];
   };
 }
 
@@ -79,6 +83,28 @@ export interface components {
       isOnline?: boolean;
       resident?: components["schemas"]["ResidentModel"];
       mmo?: components["schemas"]["MmoModel"];
+    };
+    TownModel: {
+      name?: string;
+      uuid?: string;
+      nation?: components["schemas"]["NameUuidModel"];
+      /** Format: int64 */
+      joinedNationAt: number;
+      mayor?: components["schemas"]["NameUuidModel"];
+      board?: string;
+      tag?: string;
+      formattedName?: string;
+      /** Format: int64 */
+      registered: number;
+      /** Format: int32 */
+      balance: number;
+      mapColor?: string;
+      residents?: components["schemas"]["NameUuidModel"][];
+      spawn?: components["schemas"]["CoordinatesModel"];
+      townBlocks?: components["schemas"]["CoordinatesModel"][];
+      isNeutral?: boolean;
+      isOpen?: boolean;
+      isPublic?: boolean;
     };
     NationModel: {
       name?: string;
@@ -111,28 +137,6 @@ export interface components {
       /** Format: int32 */
       maxPlayers: number;
       onlinePlayers?: components["schemas"]["NameUuidModel"][];
-    };
-    TownModel: {
-      name?: string;
-      uuid?: string;
-      nation?: components["schemas"]["NameUuidModel"];
-      /** Format: int64 */
-      joinedNationAt: number;
-      mayor?: components["schemas"]["NameUuidModel"];
-      board?: string;
-      tag?: string;
-      formattedName?: string;
-      /** Format: int64 */
-      registered: number;
-      /** Format: int32 */
-      balance: number;
-      mapColor?: string;
-      residents?: components["schemas"]["NameUuidModel"][];
-      spawn?: components["schemas"]["CoordinatesModel"];
-      townBlocks?: components["schemas"]["CoordinatesModel"][];
-      isNeutral?: boolean;
-      isOpen?: boolean;
-      isPublic?: boolean;
     };
     ResidentModel: {
       town?: components["schemas"]["NameUuidModel"];
@@ -219,6 +223,23 @@ export interface operations {
     responses: {
     };
   };
+  /** @description Search for player, town or nation by name */
+  search: {
+    parameters: {
+      path: {
+        /** @description Search query */
+        query: string;
+      };
+    };
+    responses: {
+      /** @description Query results */
+      200: {
+        content: {
+          "application/json": components["schemas"]["NameUuidModel"][];
+        };
+      };
+    };
+  };
   /** @description Get all players */
   getPlayers: {
     responses: {
@@ -253,19 +274,36 @@ export interface operations {
       };
     };
   };
-  /** @description Search for player, town or nation by name */
-  search: {
-    parameters: {
-      path: {
-        /** @description Search query */
-        query: string;
-      };
-    };
+  /** @description Get all towns */
+  getTowns: {
     responses: {
-      /** @description Query results */
+      /** @description All towns */
       200: {
         content: {
           "application/json": components["schemas"]["NameUuidModel"][];
+        };
+      };
+    };
+  };
+  /** @description Get town with name or UUID */
+  getTown: {
+    parameters: {
+      path: {
+        /** @description Name or UUID of the town */
+        identifier: string;
+      };
+    };
+    responses: {
+      /** @description Town */
+      200: {
+        content: {
+          "application/json": components["schemas"]["TownModel"];
+        };
+      };
+      /** @description Town not found */
+      404: {
+        content: {
+          "application/json": components["schemas"]["NotFoundResponse"];
         };
       };
     };
@@ -299,6 +337,17 @@ export interface operations {
       };
     };
     responses: {
+    };
+  };
+  /** @description Get all vote sites */
+  getVotes: {
+    responses: {
+      /** @description Vote URLs */
+      200: {
+        content: {
+          "application/json": string[];
+        };
+      };
     };
   };
   /** @description Get all nations */
@@ -342,40 +391,6 @@ export interface operations {
       200: {
         content: {
           "application/json": components["schemas"]["ServerModel"];
-        };
-      };
-    };
-  };
-  /** @description Get all towns */
-  getTowns: {
-    responses: {
-      /** @description All towns */
-      200: {
-        content: {
-          "application/json": components["schemas"]["NameUuidModel"][];
-        };
-      };
-    };
-  };
-  /** @description Get town with name or UUID */
-  getTown: {
-    parameters: {
-      path: {
-        /** @description Name or UUID of the town */
-        identifier: string;
-      };
-    };
-    responses: {
-      /** @description Town */
-      200: {
-        content: {
-          "application/json": components["schemas"]["TownModel"];
-        };
-      };
-      /** @description Town not found */
-      404: {
-        content: {
-          "application/json": components["schemas"]["NotFoundResponse"];
         };
       };
     };
