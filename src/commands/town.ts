@@ -88,7 +88,7 @@ const Town: Command = {
             },
             {
                 name: "📜 Town board",
-                value: town.data.board,
+                value: town.data.board ? town.data.board : "Aucun",
                 inline: true,
             },
             {

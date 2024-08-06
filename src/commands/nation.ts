@@ -91,7 +91,7 @@ const Nation: Command = {
             },
             {
                 name: "📜 Nation board",
-                value: nation.data.board,
+                value: nation.data.board ? nation.data.board : "Aucun",
                 inline: true,
             },
             {
