@@ -20,6 +20,7 @@ const Mute: Command = {
             option.setName("duration").setDescription("Durée du mute en minutes").setRequired(true)
         )
         .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers)
+        .setDMPermission(false)
         .toJSON(),
 
     async run(client, interaction) {
