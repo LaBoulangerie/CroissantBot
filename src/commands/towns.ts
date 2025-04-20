@@ -3,23 +3,21 @@ import config from "../config";
 import fetcher from "../fetcher";
 import { Command } from "../types/command";
 
-const Towns: Command = {
+const Lands: Command = {
     data: new SlashCommandBuilder()
-        .setName("towns")
+        .setName("lands")
         .setDescription("Donne la liste des villes présentes sur le serveur")
         .toJSON(),
-    async run(client, interaction) {
-        const towns = await fetcher.path("/town").method("get").create()({});
+    async run(_client, interaction) {
+        const { data: lands } = await fetcher.GET("/land");
 
-        const townsEmbed = new EmbedBuilder()
+        const landsEmbed = new EmbedBuilder()
             .setColor(config.color)
-            .setTitle(`🏡 ${towns.data.length} Villes`)
-            .setDescription(
-                towns.data.map((t) => inlineCode(t.name)).join(", ")
-            );
+            .setTitle(`🏡 ${lands.length} Villes`)
+            .setDescription(lands.map((t) => inlineCode(t.name)).join(", "));
 
-        interaction.reply({ embeds: [townsEmbed] });
+        interaction.reply({ embeds: [landsEmbed] });
     },
 };
 
-export default Towns;
+export default Lands;

@@ -1,6 +1,5 @@
-import { EmbedBuilder, hyperlink, time } from "@discordjs/builders";
+import { EmbedBuilder, hyperlink } from "@discordjs/builders";
 import { Colors, inlineCode, SlashCommandBuilder } from "discord.js";
-import { ApiResponse } from "@qdrant/openapi-typescript-fetch";
 import config from "../config";
 import fetcher from "../fetcher";
 import { Command } from "../types/command";
@@ -17,102 +16,77 @@ const Nation: Command = {
                 .setAutocomplete(true)
         )
         .toJSON(),
-    async run(client, interaction) {
+    async run(_client, interaction) {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier", true);
-        const getNation = fetcher.path("/nation/{identifier}").method("get").create();
-        let nation: ApiResponse;
+        const { data: nation, error } = await fetcher.GET("/nation/{identifier}", {
+            params: {
+                path: {
+                    identifier,
+                },
+            },
+        });
 
-        try {
-            nation = await getNation({ identifier });
-        } catch (e) {
-            if (e instanceof getNation.Error) {
-                const error = e.getActualType();
-                if (error.status == 404) {
-                    const errorEmbed = new EmbedBuilder()
-                        .setColor(Colors.Red)
-                        .setTitle(`❌ Erreur ${error.status}`)
-                        .setDescription(`Nation ${identifier} non trouvée`);
+        if (error) {
+            const errorEmbed = new EmbedBuilder()
+                .setColor(Colors.Red)
+                .setTitle(`❌ Erreur ${error.status}`)
+                .setDescription(error.message);
 
-                    return await interaction.editReply({
-                        embeds: [errorEmbed],
-                    });
-                }
-            }
-        }
-        const nationEmbed = new EmbedBuilder()
-            .setColor(parseInt(nation.data.mapColor, 16))
-            .setTitle(
-                "🚩 " + nation.data.formattedName + (nation.data.tag ? ` [${nation.data.tag}]` : "")
-            );
-
-        if (nation.data.spawn) {
-            nationEmbed.addFields({
-                name: "📍 Spawn",
-                value:
-                    "XYZ: " +
-                    inlineCode(
-                        `${nation.data.spawn.x} ${nation.data.spawn.y} ${nation.data.spawn.z}`
-                    ),
-                inline: true,
+            return await interaction.editReply({
+                embeds: [errorEmbed],
             });
         }
 
-        if (nation.data.allies.length) {
+        const nationEmbed = new EmbedBuilder()
+            .setColor(parseInt(nation.color, 16))
+            .setTitle("🚩 " + nation.name);
+
+        if (nation.allies.length) {
             nationEmbed.addFields({
                 name: "🤝 Alliés",
-                value: nation.data.allies.map((x) => inlineCode(x.name)).join(", "),
+                value: nation.allies.map((x) => inlineCode(x.name)).join(", "),
             });
         }
 
-        if (nation.data.enemies.length) {
+        if (nation.enemies.length) {
             nationEmbed.addFields({
                 name: "⚔️ Enemis",
-                value: nation.data.enemies.map((x) => inlineCode(x.name)).join(", "),
+                value: nation.enemies.map((x) => inlineCode(x.name)).join(", "),
             });
         }
 
         nationEmbed.addFields(
             {
                 name: "👑 Capitale",
-                value: nation.data.capital.name,
+                value: nation.capital.name,
                 inline: true,
             },
             {
-                name: `🏘️ ${nation.data.towns.length} villes`,
-                value: nation.data.towns.map((town) => inlineCode(town.name)).join(", "),
+                name: `🏘️ ${nation.lands.length} villes`,
+                value: nation.lands.map((land) => inlineCode(land.name)).join(", "),
                 inline: true,
             },
             {
                 name: "💰 Banque",
-                value: inlineCode(nation.data.balance) + "฿",
-                inline: true,
-            },
-            {
-                name: "📜 Nation board",
-                value: nation.data.board ? nation.data.board : "Aucun",
-                inline: true,
-            },
-            {
-                name: "⏳ Date de création",
-                value: time(Math.round(nation.data.registered / 1000)),
+                value: inlineCode(nation.balance.toString()) + "฿",
                 inline: true,
             },
             {
                 name: config.wikiEmoji + " Page wiki",
-                value: hyperlink(nation.data.name, config.wikiBaseURL + "wiki/" + nation.data.name),
+                value: hyperlink(nation.name, config.wikiBaseURL + "wiki/" + nation.name),
                 inline: true,
             }
         );
 
         return await interaction.editReply({ embeds: [nationEmbed] });
     },
-    async autocomplete(client, interaction) {
+    async autocomplete(_client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const nations = await fetcher.path("/nation").method("get").create()({});
+        const { data: nations } = await fetcher.GET("/nation");
 
-        const filtered = Array.from(nations.data)
+        const filtered = Array.from(nations)
             .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(

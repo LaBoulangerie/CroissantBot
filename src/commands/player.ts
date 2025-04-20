@@ -7,7 +7,6 @@ import {
     SlashCommandBuilder,
     time,
 } from "discord.js";
-import { ApiResponse } from "@qdrant/openapi-typescript-fetch";
 import config from "../config";
 import fetcher from "../fetcher";
 import { Command } from "../types/command";
@@ -25,84 +24,55 @@ const Player: Command = {
         )
         .toJSON(),
 
-    async run(client, interaction) {
+    async run(_client, interaction) {
         await interaction.deferReply();
 
         const identifier = interaction.options.getString("identifier");
 
-        const getPlayer = fetcher.path("/player/{identifier}").method("get").create();
+        const { data: player, error } = await fetcher.GET("/player/{identifier}", {
+            params: {
+                path: {
+                    identifier,
+                },
+            },
+        });
 
-        let player: ApiResponse;
-
-        try {
-            player = await getPlayer({ identifier });
-        } catch (e) {
-            if (e instanceof getPlayer.Error) {
-                const error = e.getActualType();
-
-                if (error.status == 404) {
-                    const errorEmbed = new EmbedBuilder()
-                        .setColor(Colors.Red)
-                        .setTitle(`❌ Erreur ${error.status}`)
-                        .setDescription(`Joueur ${identifier} non trouvé`);
-
-                    return await interaction.editReply({
-                        embeds: [errorEmbed],
-                    });
-                }
-            }
+        if (error) {
+            const errorEmbed = new EmbedBuilder()
+                .setColor(Colors.Red)
+                .setTitle(`❌ Erreur ${error.status}`)
+                .setDescription(error.message);
+            return await interaction.editReply({
+                embeds: [errorEmbed],
+            });
         }
 
         const playerEmbed = new EmbedBuilder()
             .setColor(config.color)
             .setTitle(
-                (player.data.resident.isKing ? "👑" : player.data.resident.isMayor ? "🎖️" : "👤") +
-                    inlineCode(`[${player.data.mmo.palier}]`) +
+                (player.resident.isKing ? "👑" : player.resident.isMayor ? "🎖️" : "👤") +
+                    inlineCode(`[${player.mmo.palier}]`) +
                     " " +
-                    player.data.resident.formattedName +
+                    player.resident.roleName +
+                    " " +
+                    player.name +
                     " • " +
-                    (player.data.isOnline ? "✅ En ligne" : "🔴 Hors ligne")
+                    (player.isOnline ? "✅ En ligne" : "🔴 Hors ligne")
             )
-            .setThumbnail(
-                `https://visage.surgeplay.com/bust/${player.data.uuid.replace("-", "")}.png`
-            );
+            .setThumbnail(`https://visage.surgeplay.com/bust/${player.uuid.replace("-", "")}.png`);
 
-        if (player.data.resident.town) {
+        if (player.resident.land) {
             playerEmbed.addFields({
                 name: "🏡 Ville",
-                value: player.data.resident.town.name,
+                value: player.resident.land.name,
                 inline: true,
             });
         }
 
-        if (player.data.resident.townRanks.length) {
-            playerEmbed.addFields({
-                name: "🏡 Rangs de ville",
-                value: player.data.resident.townRanks.map((x) => inlineCode(x)).join(", "),
-                inline: true,
-            });
-        }
-
-        if (player.data.resident.nation) {
+        if (player.resident.nation) {
             playerEmbed.addFields({
                 name: "🚩 Nation",
-                value: player.data.resident.nation.name,
-                inline: true,
-            });
-        }
-
-        if (player.data.resident.nationRanks.length) {
-            playerEmbed.addFields({
-                name: "🚩 Rangs de nation",
-                value: player.data.resident.nationRanks.map((x) => inlineCode(x)).join(", "),
-                inline: true,
-            });
-        }
-
-        if (player.data.resident.friends.length) {
-            playerEmbed.addFields({
-                name: "🙌 Amis",
-                value: player.data.resident.friends.map((x) => inlineCode(x.name)).join(", "),
+                value: player.resident.nation.name,
                 inline: true,
             });
         }
@@ -114,7 +84,7 @@ const Player: Command = {
             miner: "⛏️",
         };
 
-        player.data.mmo.talents.forEach((talent) => {
+        player.mmo.talents.forEach((talent) => {
             const progress = (talent.xp - talent.minLevelXp) / talent.xpToNextLevel;
             const progressBarSize = 20;
             const progressBar =
@@ -154,28 +124,28 @@ const Player: Command = {
         playerEmbed.addFields(
             {
                 name: "⏳ Dernière connexion",
-                value: time(Math.round(player.data.lastSeen / 1000)),
+                value: time(Math.round(player.lastSeen / 1000)),
                 inline: true,
             },
             {
                 name: "⏳ Première connexion",
-                value: time(Math.round(player.data.firstPlayed / 1000)),
+                value: time(Math.round(player.firstPlayed / 1000)),
                 inline: true,
             },
             {
                 name: config.wikiEmoji + " Page wiki",
-                value: hyperlink(player.data.name, config.wikiBaseURL + "wiki/" + player.data.name),
+                value: hyperlink(player.name, config.wikiBaseURL + "wiki/" + player.name),
                 inline: true,
             }
         );
 
         return await interaction.editReply({ embeds: [playerEmbed] });
     },
-    async autocomplete(client, interaction) {
+    async autocomplete(_client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const players = await fetcher.path("/player").method("get").create()({});
+        const { data: players } = await fetcher.GET("/player");
 
-        const filtered = Array.from(players.data)
+        const filtered = Array.from(players)
             .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(

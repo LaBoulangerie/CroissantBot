@@ -8,17 +8,13 @@ const Nations: Command = {
         .setName("nations")
         .setDescription("Donne la liste des nations présentes sur le serveur")
         .toJSON(),
-    async run(client, interaction) {
-        const nations = await fetcher.path("/nation").method("get").create()(
-            {}
-        );
+    async run(_client, interaction) {
+        const nations = await fetcher.GET("/nation");
 
         const nationsEmbed = new EmbedBuilder()
             .setColor(config.color)
             .setTitle(`🚩 ${nations.data.length} Nations`)
-            .setDescription(
-                nations.data.map((n) => inlineCode(n.name)).join(", ")
-            );
+            .setDescription(nations.data.map((n) => inlineCode(n.name)).join(", "));
 
         interaction.reply({ embeds: [nationsEmbed] });
     },

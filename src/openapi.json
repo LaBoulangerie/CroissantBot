@@ -10,41 +10,21 @@
     "version" : ""
   },
   "paths" : {
-    "/server" : {
+    "/staff" : {
       "get" : {
-        "tags" : [ "Server" ],
-        "summary" : "Get server informations",
-        "operationId" : "getServer",
+        "tags" : [ "Staff" ],
+        "description" : "Get staff members",
+        "operationId" : "getStaff",
         "parameters" : [ ],
         "responses" : {
           "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/ServerModel"
-                }
-              }
-            }
-          }
-        },
-        "deprecated" : false,
-        "security" : [ ]
-      }
-    },
-    "/town" : {
-      "get" : {
-        "tags" : [ "Town" ],
-        "summary" : "Get all towns",
-        "operationId" : "getTowns",
-        "parameters" : [ ],
-        "responses" : {
-          "200" : {
+            "description" : "Staff members",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/NameUuidModel"
+                    "$ref" : "#/components/schemas/TypedNameIdModel"
                   }
                 }
               }
@@ -53,172 +33,42 @@
         },
         "deprecated" : false,
         "security" : [ ]
-      }
-    },
-    "/town/{identifier}" : {
-      "get" : {
-        "tags" : [ "Town" ],
-        "summary" : "Get town with name or UUID",
-        "operationId" : "getTown",
-        "parameters" : [ {
-          "name" : "identifier",
-          "in" : "path",
-          "description" : "Name or UUID of the town",
-          "required" : false,
-          "deprecated" : false,
-          "allowEmptyValue" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/NotFoundResponse"
-                }
-              }
-            }
-          },
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/TownModel"
-                }
-              }
-            }
-          }
-        },
-        "deprecated" : false,
-        "security" : [ ]
-      }
-    },
-    "/nation" : {
-      "get" : {
-        "tags" : [ "Nation" ],
-        "summary" : "Get all nations",
-        "operationId" : "getNations",
+      },
+      "post" : {
+        "tags" : [ "Staff" ],
+        "description" : "Add staff",
+        "operationId" : "addStaff",
         "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/NameUuidModel"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "deprecated" : false,
-        "security" : [ ]
-      }
-    },
-    "/nation/{identifier}" : {
-      "get" : {
-        "tags" : [ "Nation" ],
-        "summary" : "Get nation with name or UUID",
-        "operationId" : "getNation",
-        "parameters" : [ {
-          "name" : "identifier",
-          "in" : "path",
-          "description" : "Name or UUID of the nation",
-          "required" : false,
-          "deprecated" : false,
-          "allowEmptyValue" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/NotFoundResponse"
-                }
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TypedNameIdModel"
               }
             }
           },
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/NationModel"
-                }
-              }
-            }
-          }
+          "required" : false
         },
+        "responses" : { },
         "deprecated" : false,
         "security" : [ ]
-      }
-    },
-    "/player" : {
-      "get" : {
-        "tags" : [ "Player" ],
-        "summary" : "Get all players",
-        "operationId" : "getPlayers",
+      },
+      "delete" : {
+        "tags" : [ "Staff" ],
+        "description" : "Delete staff",
+        "operationId" : "deleteStaff",
         "parameters" : [ ],
-        "responses" : {
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "type" : "array",
-                  "items" : {
-                    "$ref" : "#/components/schemas/NameUuidModel"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "deprecated" : false,
-        "security" : [ ]
-      }
-    },
-    "/player/{identifier}" : {
-      "get" : {
-        "tags" : [ "Player" ],
-        "summary" : "Get player with name or UUID",
-        "operationId" : "getPlayer",
-        "parameters" : [ {
-          "name" : "identifier",
-          "in" : "path",
-          "description" : "Name or UUID of the player",
-          "required" : false,
-          "deprecated" : false,
-          "allowEmptyValue" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "404" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/NotFoundResponse"
-                }
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TypedNameIdModel"
               }
             }
           },
-          "200" : {
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PlayerModel"
-                }
-              }
-            }
-          }
+          "required" : false
         },
+        "responses" : { },
         "deprecated" : false,
         "security" : [ ]
       }
@@ -226,7 +76,7 @@
     "/search/{query}" : {
       "get" : {
         "tags" : [ "Search" ],
-        "summary" : "Search for player, town or nation by name",
+        "description" : "Search for player, land or nation by name",
         "operationId" : "search",
         "parameters" : [ {
           "name" : "query",
@@ -241,13 +91,325 @@
         } ],
         "responses" : {
           "200" : {
+            "description" : "Query results",
             "content" : {
               "application/json" : {
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/NameUuidModel"
+                    "$ref" : "#/components/schemas/NameIdModel"
                   }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/player" : {
+      "get" : {
+        "tags" : [ "Player" ],
+        "description" : "Get all players",
+        "operationId" : "getPlayers",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "All players",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameIdModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/player/{identifier}" : {
+      "get" : {
+        "tags" : [ "Player" ],
+        "description" : "Get player with name or UUID",
+        "operationId" : "getPlayer",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "description" : "Name or UUID of the player",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "Player not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Player",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlayerModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/donors" : {
+      "get" : {
+        "tags" : [ "Donors" ],
+        "description" : "Get donors",
+        "operationId" : "getDonors",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Donors",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/TypedNameIdModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      },
+      "post" : {
+        "tags" : [ "Donors" ],
+        "description" : "Add donor",
+        "operationId" : "addDonor",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TypedNameIdModel"
+              }
+            }
+          },
+          "required" : false
+        },
+        "responses" : { },
+        "deprecated" : false,
+        "security" : [ ]
+      },
+      "delete" : {
+        "tags" : [ "Donors" ],
+        "description" : "Delete donor",
+        "operationId" : "deleteDonor",
+        "parameters" : [ ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TypedNameIdModel"
+              }
+            }
+          },
+          "required" : false
+        },
+        "responses" : { },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/land" : {
+      "get" : {
+        "tags" : [ "Land" ],
+        "description" : "Get all lands",
+        "operationId" : "getLands",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "All lands",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameIdModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/land/{identifier}" : {
+      "get" : {
+        "tags" : [ "Land" ],
+        "description" : "Get land with name or ULID",
+        "operationId" : "getLand",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "description" : "Name or ULID of the land",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "Land not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Land",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LandModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/vote" : {
+      "get" : {
+        "tags" : [ "Vote" ],
+        "description" : "Get all vote sites",
+        "operationId" : "getVotes",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Vote URLs",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/nation" : {
+      "get" : {
+        "tags" : [ "Nation" ],
+        "description" : "Get all nations",
+        "operationId" : "getNations",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "All nations",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/NameIdModel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/nation/{identifier}" : {
+      "get" : {
+        "tags" : [ "Nation" ],
+        "description" : "Get nation with name or UUID",
+        "operationId" : "getNation",
+        "parameters" : [ {
+          "name" : "identifier",
+          "in" : "path",
+          "description" : "Name or UUID of the nation",
+          "required" : false,
+          "deprecated" : false,
+          "allowEmptyValue" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "404" : {
+            "description" : "Nation not found",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotFoundResponse"
+                }
+              }
+            }
+          },
+          "200" : {
+            "description" : "Nation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NationModel"
+                }
+              }
+            }
+          }
+        },
+        "deprecated" : false,
+        "security" : [ ]
+      }
+    },
+    "/server" : {
+      "get" : {
+        "tags" : [ "Server" ],
+        "description" : "Get server informations",
+        "operationId" : "getServer",
+        "parameters" : [ ],
+        "responses" : {
+          "200" : {
+            "description" : "Server informations",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ServerModel"
                 }
               }
             }
@@ -260,191 +422,28 @@
   },
   "components" : {
     "schemas" : {
-      "ServerModel" : {
+      "TypedNameIdModel" : {
         "type" : "object",
         "properties" : {
-          "name" : {
+          "type" : {
             "type" : "string"
-          },
-          "motd" : {
-            "type" : "string"
-          },
-          "version" : {
-            "type" : "string"
-          },
-          "bukkitVersion" : {
-            "type" : "string"
-          },
-          "tps" : {
-            "type" : "string"
-          },
-          "maxPlayers" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "onlinePlayers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
           }
-        },
-        "required" : [ "maxPlayers" ]
+        }
       },
-      "NameUuidModel" : {
+      "NameIdModel" : {
         "type" : "object",
         "properties" : {
           "name" : {
             "type" : "string"
           },
-          "uuid" : {
-            "type" : "string"
+          "id" : {
+            "type" : "object"
           }
         }
       },
       "NotFoundResponse" : {
         "type" : "object",
         "properties" : { }
-      },
-      "TownModel" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "uuid" : {
-            "type" : "string"
-          },
-          "nation" : {
-            "$ref" : "#/components/schemas/NameUuidModel"
-          },
-          "joinedNationAt" : {
-            "type" : "number",
-            "format" : "int64"
-          },
-          "mayor" : {
-            "$ref" : "#/components/schemas/NameUuidModel"
-          },
-          "board" : {
-            "type" : "string"
-          },
-          "tag" : {
-            "type" : "string"
-          },
-          "formattedName" : {
-            "type" : "string"
-          },
-          "registered" : {
-            "type" : "number",
-            "format" : "int64"
-          },
-          "balance" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "mapColor" : {
-            "type" : "string"
-          },
-          "residents" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
-          },
-          "spawn" : {
-            "$ref" : "#/components/schemas/CoordinatesModel"
-          },
-          "townBlocks" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/CoordinatesModel"
-            }
-          },
-          "isNeutral" : {
-            "type" : "boolean"
-          },
-          "isOpen" : {
-            "type" : "boolean"
-          },
-          "isPublic" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "joinedNationAt", "registered", "balance" ]
-      },
-      "NationModel" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
-            "type" : "string"
-          },
-          "uuid" : {
-            "type" : "string"
-          },
-          "king" : {
-            "$ref" : "#/components/schemas/NameUuidModel"
-          },
-          "capital" : {
-            "$ref" : "#/components/schemas/NameUuidModel"
-          },
-          "board" : {
-            "type" : "string"
-          },
-          "tag" : {
-            "type" : "string"
-          },
-          "formattedName" : {
-            "type" : "string"
-          },
-          "registered" : {
-            "type" : "number",
-            "format" : "int64"
-          },
-          "balance" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "mapColor" : {
-            "type" : "string"
-          },
-          "towns" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
-          },
-          "residents" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
-          },
-          "enemies" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
-          },
-          "allies" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
-          },
-          "spawn" : {
-            "$ref" : "#/components/schemas/CoordinatesModel"
-          },
-          "isNeutral" : {
-            "type" : "boolean"
-          },
-          "isOpen" : {
-            "type" : "boolean"
-          },
-          "isPublic" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "registered", "balance" ]
       },
       "PlayerModel" : {
         "type" : "object",
@@ -475,6 +474,183 @@
         },
         "required" : [ "firstPlayed", "lastSeen" ]
       },
+      "LandModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "ulid" : {
+            "$ref" : "#/components/schemas/ULID"
+          },
+          "nation" : {
+            "$ref" : "#/components/schemas/NameIdModel"
+          },
+          "mayor" : {
+            "$ref" : "#/components/schemas/NameIdModel"
+          },
+          "titleMessage" : {
+            "type" : "string"
+          },
+          "levelName" : {
+            "type" : "string"
+          },
+          "balance" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "color" : {
+            "type" : "string"
+          },
+          "residents" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          },
+          "spawn" : {
+            "$ref" : "#/components/schemas/CoordinatesModel"
+          },
+          "chunksCoordinates" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/CoordinatesModel"
+            }
+          },
+          "enemies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          },
+          "allies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          }
+        },
+        "required" : [ "balance" ]
+      },
+      "NationModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "ulid" : {
+            "$ref" : "#/components/schemas/ULID"
+          },
+          "king" : {
+            "$ref" : "#/components/schemas/NameIdModel"
+          },
+          "capital" : {
+            "$ref" : "#/components/schemas/NameIdModel"
+          },
+          "balance" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "color" : {
+            "type" : "string"
+          },
+          "lands" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          },
+          "enemies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          },
+          "allies" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          }
+        },
+        "required" : [ "balance" ]
+      },
+      "ServerModel" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "motd" : {
+            "type" : "string"
+          },
+          "version" : {
+            "type" : "string"
+          },
+          "bukkitVersion" : {
+            "type" : "string"
+          },
+          "tps" : {
+            "type" : "string"
+          },
+          "maxPlayers" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "onlinePlayers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/NameIdModel"
+            }
+          }
+        },
+        "required" : [ "maxPlayers" ]
+      },
+      "ResidentModel" : {
+        "type" : "object",
+        "properties" : {
+          "land" : {
+            "$ref" : "#/components/schemas/NameIdModel"
+          },
+          "nation" : {
+            "$ref" : "#/components/schemas/NameIdModel"
+          },
+          "isMayor" : {
+            "type" : "boolean"
+          },
+          "isKing" : {
+            "type" : "boolean"
+          },
+          "roleName" : {
+            "type" : "string"
+          },
+          "balance" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        },
+        "required" : [ "balance" ]
+      },
+      "MmoModel" : {
+        "type" : "object",
+        "properties" : {
+          "palier" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "talents" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/TalentModel"
+            }
+          }
+        },
+        "required" : [ "palier" ]
+      },
+      "ULID" : {
+        "type" : "object",
+        "properties" : { }
+      },
       "CoordinatesModel" : {
         "type" : "object",
         "properties" : {
@@ -498,72 +674,6 @@
           }
         },
         "required" : [ "x", "y", "z" ]
-      },
-      "ResidentModel" : {
-        "type" : "object",
-        "properties" : {
-          "town" : {
-            "$ref" : "#/components/schemas/NameUuidModel"
-          },
-          "nation" : {
-            "$ref" : "#/components/schemas/NameUuidModel"
-          },
-          "friends" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/NameUuidModel"
-            }
-          },
-          "isMayor" : {
-            "type" : "boolean"
-          },
-          "isKing" : {
-            "type" : "boolean"
-          },
-          "townRanks" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "nationRanks" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "surname" : {
-            "type" : "string"
-          },
-          "title" : {
-            "type" : "string"
-          },
-          "prefix" : {
-            "type" : "string"
-          },
-          "postfix" : {
-            "type" : "string"
-          },
-          "formattedName" : {
-            "type" : "string"
-          }
-        }
-      },
-      "MmoModel" : {
-        "type" : "object",
-        "properties" : {
-          "palier" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "talents" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/TalentModel"
-            }
-          }
-        },
-        "required" : [ "palier" ]
       },
       "TalentModel" : {
         "type" : "object",

@@ -1,16 +1,13 @@
-import { paths } from "./types/api";
-import { Fetcher } from "@qdrant/openapi-typescript-fetch";
+import type { paths } from "./types/api";
 import config from "./config";
+import createClient from "openapi-fetch";
 
-const fetcher = Fetcher.for<paths>();
-fetcher.configure({
+const client = createClient<paths>({
     baseUrl: config.apiBaseURL,
-    init: {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + config.apiToken,
-        },
+    headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + config.apiToken,
     },
 });
 
-export default fetcher;
+export default client;

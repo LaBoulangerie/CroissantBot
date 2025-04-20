@@ -9,29 +9,29 @@
         "start:prod": "node dist/index.js",
         "build": "tsc",
         "watch": "tsc -w",
-        "openapi": "npx openapi-typescript https://api.laboulangerie.net/openapi -o src/types/api.ts"
+        "openapi": "npx openapi-typescript https://api.laboulangerie.net/openapi -o src/types/api.ts",
+        "test:ts": "tsc --noEmit"
     },
     "author": "PainOchoco",
     "license": "MIT",
     "dependencies": {
         "@googleapis/sheets": "^4.0.1",
-        "@keyv/redis": "^2.5.5",
-        "@qdrant/openapi-typescript-fetch": "^1.2.1",
         "@wakeful-cloud/html-translator": "1.1.2",
-        "axios": "^1.6.8",
-        "discord.js": "^14.13.0",
-        "dotenv": "16.0.3",
-        "googleapis": "^111.0.0",
-        "keyv": "^4.5.2",
-        "luxon": "^3.2.1",
+        "axios": "1.8.4",
+        "discord.js": "14.18.0",
+        "dotenv": "16.5.0",
+        "googleapis": "148.0.0",
+        "keyv": "4.5.2",
+        "luxon": "3.6.1",
+        "openapi-fetch": "^0.13.5",
         "path": "0.12.7",
-        "wikijs": "6.4.0"
+        "wikijs": "6.4.1"
     },
     "devDependencies": {
-        "@types/luxon": "3.2.0",
-        "@types/node": "^20.8.0",
-        "openapi-typescript": "^6.7.0",
-        "ts-node": "^10.9.1",
-        "typescript": "^5.2.2"
+        "@types/luxon": "3.6.2",
+        "@types/node": "^22.14.1",
+        "openapi-typescript": "^7.6.1",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.8.3"
     }
 }

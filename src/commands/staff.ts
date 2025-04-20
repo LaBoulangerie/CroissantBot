@@ -53,7 +53,7 @@ const Staff: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .toJSON(),
 
-    async run(client, interaction) {
+    async run(_client, interaction) {
         if (interaction.channel.isDMBased()) return;
         await interaction.deferReply();
 
@@ -61,27 +61,25 @@ const Staff: Command = {
         const identifier = interaction.options.getString("identifier");
         const role = interaction.options.getString("role");
 
-        const body = isUuid(identifier) ? { uuid: identifier } : { name: identifier };
-        body["type"] = role;
-
-        if (!body["uuid"]) body["uuid"] = await uuidFromUsername(body["name"]);
-        else if (!body["name"]) body["name"] = await usernameFromUuid(body["uuid"]);
+        const body = {
+            id: isUuid(identifier) ? identifier : await uuidFromUsername(identifier),
+            name: isUuid(identifier) ? await usernameFromUuid(identifier) : identifier,
+            type: role,
+        };
 
         const answerEmbed = new EmbedBuilder();
 
         switch (action) {
             case "add":
-                const addStaff = fetcher.path("/staff").method("post").create();
-                await addStaff(body);
+                await fetcher.POST("/staff", { body });
 
-                answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(identifier)} dans le staff`);
+                answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(body.name)} dans le staff`);
                 answerEmbed.setColor(Colors.Green);
                 break;
             case "delete":
-                const deleteStaff = fetcher.path("/staff").method("delete").create();
-                await deleteStaff(body);
+                await fetcher.DELETE("/staff", { body });
 
-                answerEmbed.setTitle(`🥞 Suppression de ${inlineCode(identifier)} dans le staff`);
+                answerEmbed.setTitle(`🥞 Suppression de ${inlineCode(body.name)} dans le staff`);
                 answerEmbed.setColor(Colors.Red);
                 break;
             default:
@@ -91,17 +89,17 @@ const Staff: Command = {
         return await interaction.editReply({ embeds: [answerEmbed] });
     },
 
-    async autocomplete(client, interaction) {
+    async autocomplete(_client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const staff = await fetcher.path("/staff").method("get").create()({});
+        const { data: staff } = await fetcher.GET("/staff");
 
-        const filtered = Array.from(staff.data)
-            .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
+        const filtered = Array.from(staff)
+            .filter((choice) => choice["name"].toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(
             filtered.map((choice) => ({
-                name: choice.name,
-                value: choice.name,
+                name: choice["name"],
+                value: choice["name"],
             }))
         );
     },

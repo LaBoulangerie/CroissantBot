@@ -20,11 +20,11 @@ const MessageCreate: Event = {
                 message.react("✅");
                 setTimeout(() => message.delete(), 3000);
 
-                let version = "1.20.2";
-                const getStatus = fetcher.path("/server").method("get").create();
+                let version = "1.21.1";
+                const { data: status } = await fetcher.GET("/server");
 
                 try {
-                    version = (await getStatus({})).data.bukkitVersion.split("-")[0];
+                    version = status.bukkitVersion.split("-")[0];
                 } catch (ignored) {}
 
                 const infoEmbed = new EmbedBuilder()

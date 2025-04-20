@@ -4,3 +4,4 @@ package-lock.json
 form-ids.ts
 dist
 google_keys.json
+.DS_Store

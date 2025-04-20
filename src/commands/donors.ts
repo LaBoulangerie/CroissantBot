@@ -44,36 +44,34 @@ const Donors: Command = {
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
         .toJSON(),
 
-    async run(client, interaction) {
+    async run(_client, interaction) {
         if (interaction.channel.isDMBased()) return;
         await interaction.deferReply();
 
         const action = interaction.options.getSubcommand();
         const identifier = interaction.options.getString("identifier");
-        const role = interaction.options.getInteger("amount");
+        const amount = interaction.options.getInteger("amount");
 
-        const body = isUuid(identifier) ? { uuid: identifier } : { name: identifier };
-        body["type"] = role.toString();
-
-        if (!body["uuid"]) body["uuid"] = await uuidFromUsername(body["name"]);
-        else if (!body["name"]) body["name"] = await usernameFromUuid(body["uuid"]);
+        const body = {
+            id: isUuid(identifier) ? identifier : await uuidFromUsername(identifier),
+            name: isUuid(identifier) ? await usernameFromUuid(identifier) : identifier,
+            type: amount.toString(),
+        };
 
         const answerEmbed = new EmbedBuilder();
 
         switch (action) {
             case "add":
-                const addDonor = fetcher.path("/donors").method("post").create();
-                await addDonor(body);
+                await fetcher.POST("/donors", { body });
 
-                answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(identifier)} dans les donateurs`);
+                answerEmbed.setTitle(`🥨 Ajout de ${inlineCode(body.name)} dans les donateurs`);
                 answerEmbed.setColor(Colors.Green);
                 break;
             case "delete":
-                const deleteDonor = fetcher.path("/donors").method("delete").create();
-                await deleteDonor(body);
+                await fetcher.DELETE("/donors", { body });
 
                 answerEmbed.setTitle(
-                    `🥞 Suppression de ${inlineCode(identifier)} dans les donateurs`
+                    `🥞 Suppression de ${inlineCode(body.name)} dans les donateurs`
                 );
                 answerEmbed.setColor(Colors.Red);
                 break;
@@ -83,17 +81,17 @@ const Donors: Command = {
         return await interaction.editReply({ embeds: [answerEmbed] });
     },
 
-    async autocomplete(client, interaction) {
+    async autocomplete(_client, interaction) {
         const focusedValue = interaction.options.getFocused();
-        const donors = await fetcher.path("/donors").method("get").create()({});
+        const { data: donors } = await fetcher.GET("/donors");
 
-        const filtered = Array.from(donors.data)
-            .filter((choice) => choice.name.toLowerCase().startsWith(focusedValue.toLowerCase()))
+        const filtered = Array.from(donors)
+            .filter((choice) => choice["name"].toLowerCase().startsWith(focusedValue.toLowerCase()))
             .slice(0, 25); // Discord limit
         await interaction.respond(
             filtered.map((choice) => ({
-                name: choice.name,
-                value: choice.name,
+                name: choice["name"],
+                value: choice["name"],
             }))
         );
     },

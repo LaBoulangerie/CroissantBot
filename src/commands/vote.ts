@@ -9,13 +9,13 @@ const Vote: Command = {
         .setDescription("Votez pour La Boulangerie !")
         .toJSON(),
     async run(client, interaction) {
-        const votes = await fetcher.path("/vote").method("get").create()({});
-        const domains = votes.data.map((v) => new URL(v).hostname);
+        const { data: votes } = await fetcher.GET("/vote");
+        const domains = votes.map((v) => new URL(v).hostname);
 
         const votesEmbed = new EmbedBuilder()
             .setColor(config.color)
             .setTitle("🗳️ Votez pour La Boulangerie !")
-            .setDescription(votes.data.map((v, i) => hyperlink(domains[i], v)).join("\n"));
+            .setDescription(votes.map((v, i) => hyperlink(domains[i], v)).join("\n"));
 
         interaction.reply({ embeds: [votesEmbed] });
     },
