@@ -82,7 +82,7 @@ const Manage: Command = {
                             .setTitle("Liste des réponses aux formulaires")
                             .setColor(Colors.DarkPurple);
 
-                        for await (const [key, value] of keyv.iterator()) {
+                        for await (const [key, value] of keyv.iterator(null)) {
                             const v = value as Array<FormResponse>;
                             formListEmbed.addFields({
                                 name: (await client.users.fetch(key)).username,
