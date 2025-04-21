@@ -17,6 +17,7 @@
     "dependencies": {
         "@googleapis/sheets": "^4.0.1",
         "@wakeful-cloud/html-translator": "1.1.2",
+        "@keyv/redis": "^4.3.4",
         "axios": "1.8.4",
         "discord.js": "14.18.0",
         "dotenv": "16.5.0",
